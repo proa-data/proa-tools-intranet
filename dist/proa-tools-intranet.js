@@ -1,5 +1,5 @@
 /*!
- * Proa Tools Intranet v1.2.1 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v1.2.2 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
@@ -55,22 +55,6 @@ function answer( $locale ) {
 		return answers[ bool ? 1 : 0 ];
 	};
 }
-} )();
-( function() {
-angular
-	.module( 'proaTools.intranet' )
-	.value( '$extraLocale', {
-		DATETIME_FORMATS: {
-			fullShort: 'dd/MM/yyyy HH:mm:ss',
-			fullShortDate: 'dd/MM/yyyy',
-			fullShortTime: 'HH:mm:ss'
-		},
-		RANGE_SEP: '-',
-		ANSWERS: [
-			'Sí',
-			'No'
-		]
-	} );
 } )();
 ( function() {
 angular

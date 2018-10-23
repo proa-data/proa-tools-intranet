@@ -52,7 +52,7 @@ function delFolder(path) {
 function processJs(minify) {
 	const firstJsFile = 'module.js',
 		nl = '\n',
-		stream = gulp.src(paths.src+'**/*.js').pipe($.order([firstJsFile,'!'+firstJsFile])).pipe($.concat(pckg.name+'.js')).pipe($.injectString.prepend('/*!'+nl+' * '+packageName+' v'+pckg.version+' ('+pckg.homepage+')'+nl+' */'+nl+nl));
+		stream = gulp.src(paths.src+'*.js').pipe($.order([firstJsFile,'!'+firstJsFile])).pipe($.concat(pckg.name+'.js')).pipe($.injectString.prepend('/*!'+nl+' * '+packageName+' v'+pckg.version+' ('+pckg.homepage+')'+nl+' */'+nl+nl));
 	return (minify?minifyJs(stream):stream).pipe(gulp.dest(paths.dist));
 }
 
