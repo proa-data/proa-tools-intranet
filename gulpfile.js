@@ -31,11 +31,15 @@ gulp.task('build', gulpSync.sync([
 
 gulp.task('del:tmp', () => delFolder(paths.tmp));
 gulp.task('index', ['build'], () => gulp.src(paths.demo+'index.html').pipe($.wiredep({devDependencies: true})).pipe($.useref()).pipe($.injectString.replace('{{PACKAGE_NAME}}', packageName)).pipe(gulp.dest(paths.tmp)));
+gulp.task('json', () => {
+	const jsonFolder = 'json/lang/';
+	return gulp.src(paths.demo+jsonFolder+'*.json').pipe(gulp.dest(paths.tmp+jsonFolder));
+});
 gulp.task('about', () => gulp.src('package.json').pipe($.about()).pipe(gulp.dest(paths.tmp)));
 
 gulp.task('demo', gulpSync.sync([
 	'del:tmp',
-	['index', 'about']
+	['index', 'json', 'about']
 ]), () => browserSync.init({server: {baseDir: paths.tmp}}));
 
 gulp.task('default', ['build']);
