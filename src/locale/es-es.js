@@ -7,6 +7,10 @@ angular
 			fullShortDate: 'dd/MM/yyyy',
 			fullShortTime: 'HH:mm:ss'
 		},
-		RANGE_SEP: '-'
+		RANGE_SEP: '-',
+		ANSWERS: [
+			'Sí',
+			'No'
+		]
 	} );
 } )();

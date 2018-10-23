@@ -17,9 +17,10 @@ function currencyRange( $locale, currencyFilter ) {
 	};
 }
 
-function answer( PT_INTRANET_TEXTS ) {
+function answer( $locale ) {
+	var answers = $locale.ANSWERS;
 	return function( bool ) {
-		return PT_INTRANET_TEXTS.answer[ bool ? 'yes' : 'no' ];
+		return answers[ bool ? 1 : 0 ];
 	};
 }
 } )();

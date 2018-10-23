@@ -1,5 +1,5 @@
 /*!
- * Proa Tools Intranet v1.2.0 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v1.2.1 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
@@ -27,11 +27,7 @@ angular
 	.module( 'proaTools.intranet' )
 	.constant( 'DOMAIN', '{{PROA_DOMAIN}}' )
 	.constant( 'PT_INTRANET_TEXTS', {
-		version: 'Version',
-		answer: {
-			yes: 'Yes',
-			no: 'No'
-		}
+		version: 'Version'
 	} );
 } )();
 ( function() {
@@ -53,9 +49,10 @@ function currencyRange( $locale, currencyFilter ) {
 	};
 }
 
-function answer( PT_INTRANET_TEXTS ) {
+function answer( $locale ) {
+	var answers = $locale.ANSWERS;
 	return function( bool ) {
-		return PT_INTRANET_TEXTS.answer[ bool ? 'yes' : 'no' ];
+		return answers[ bool ? 1 : 0 ];
 	};
 }
 } )();
@@ -68,7 +65,11 @@ angular
 			fullShortDate: 'dd/MM/yyyy',
 			fullShortTime: 'HH:mm:ss'
 		},
-		RANGE_SEP: '-'
+		RANGE_SEP: '-',
+		ANSWERS: [
+			'Sí',
+			'No'
+		]
 	} );
 } )();
 ( function() {
@@ -115,6 +116,10 @@ angular
 			fullShortDate: 'MM/dd/yyyy',
 			fullShortTime: 'HH:mm:ss'
 		},
-		RANGE_SEP: '-'
+		RANGE_SEP: '-',
+		ANSWERS: [
+			'Yes',
+			'No'
+		]
 	} );
 } )();
