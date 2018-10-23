@@ -1,9 +1,12 @@
 /*!
- * Proa Tools Intranet v1.0.0 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v1.0.1 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
-angular.module( 'proaTools.intranet', [ 'ngLocale' ] );
+angular.module( 'proaTools.intranet', [
+	'ngLocale', 'ui.router', 'pascalprecht.translate', 'ngMaterial', 'ui.bootstrap',
+	'proaTools.records', 'proaTools.forms'
+] );
 } )();
 ( function() {
 angular
