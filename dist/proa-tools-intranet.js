@@ -1,5 +1,5 @@
 /*!
- * Proa Tools Intranet v1.2.2 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v1.2.3 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
@@ -25,10 +25,7 @@ function config( $translateProvider ) {
 ( function() {
 angular
 	.module( 'proaTools.intranet' )
-	.constant( 'DOMAIN', '{{PROA_DOMAIN}}' )
-	.constant( 'PT_INTRANET_TEXTS', {
-		version: 'Version'
-	} );
+	.constant( 'DOMAIN', '{{PROA_DOMAIN}}' );
 } )();
 ( function() {
 angular
@@ -61,13 +58,13 @@ angular
 	.module( 'proaTools.intranet' )
 	.run( runBlock );
 
-function runBlock( $translate, getLang, $locale, $extraLocale, getXhrResponseData, PT_INTRANET_TEXTS ) {
+function runBlock( $translate, getLang, $locale, $extraLocale, getXhrResponseData ) {
 	$translate.use( getLang() );
 
 	angular.merge( $locale, $extraLocale );
 
 	getXhrResponseData( 'about.json' ).then( function( data ) {
-		console.log( PT_INTRANET_TEXTS.version + ': ' + data.version );
+		console.info( 'Package: "' + data.name + '" v' + data.version + '.' );
 	} );
 }
 } )();
