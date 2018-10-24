@@ -1,5 +1,5 @@
 /*!
- * Proa Tools Intranet v1.2.3 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v1.2.4 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
@@ -21,11 +21,6 @@ function config( $translateProvider ) {
 		} )
 		.useSanitizeValueStrategy( null );
 }
-} )();
-( function() {
-angular
-	.module( 'proaTools.intranet' )
-	.constant( 'DOMAIN', '{{PROA_DOMAIN}}' );
 } )();
 ( function() {
 angular
