@@ -22,7 +22,7 @@
 	</header>
 	<main>
 		<div class="row" ng-cloak>
-			<div class="col-xs-12 col-lg-4">
+			<div class="col-xs-12 col-md-6">
 				<section ng-controller="LangController as vm">
 					<dl class="dl-horizontal">
 						<dt>Language code</dt>
@@ -30,7 +30,7 @@
 					</dl>
 				</section>
 			</div>
-			<div class="col-xs-12 col-lg-4">
+			<div class="col-xs-12 col-md-6">
 				<section ng-controller="FiltersController as vm">
 					<h2>Filters</h2>
 					<dl class="dl-horizontal">
@@ -47,11 +47,20 @@
 					</dl>
 				</section>
 			</div>
-			<div class="col-xs-12 col-lg-4">
+			<div class="clearfix"></div>
+			<div class="col-xs-12 col-md-6">
 				<section>
 					<h2>Translate</h2>
 					<p translate="firstText"></p>
 					<p translate="secondText"></p>
+				</section>
+			</div>
+			<div class="col-xs-12 col-md-6">
+				<section ng-controller="DateController as vm">
+					<div class="form-group">
+						<label>Date input</label>
+						<md-datepicker ng-model="vm.date"></md-datepicker>
+					</div>
 				</section>
 			</div>
 		</div>

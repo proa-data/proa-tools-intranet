@@ -1,17 +1,23 @@
 ( function() {
 angular
 	.module( 'app', [ 'proaTools.intranet' ] )
+	.run( runBlock )
 	.controller( 'LangController', LangController )
-	.controller( 'FiltersController', FiltersController );
+	.controller( 'FiltersController', FiltersController )
+	.controller( 'DateController', DateController );
+
+function runBlock( $rootScope ) {
+	$rootScope.now = new Date;
+}
 
 function LangController( getLang ) {
 	var vm = this;
 	vm.lang = getLang();
 }
 
-function FiltersController() {
+function FiltersController( $rootScope ) {
 	var vm = this;
-	vm.now = new Date;
+	vm.now = $rootScope.now;
 	var num = getFloat();
 	vm.nums = [ num, getFloat( num ) ];
 	vm.bool = chance.bool();
@@ -23,5 +29,10 @@ function FiltersController() {
 			max: min + 1000
 		} );
 	}
+}
+
+function DateController( $rootScope ) {
+	var vm = this;
+	vm.date = $rootScope.now;
 }
 } )();

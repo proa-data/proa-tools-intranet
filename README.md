@@ -27,6 +27,8 @@ As external ones, there are:
   - [Bootstrap](https://getbootstrap.com).
   - [UI Bootstrap](https://angular-ui.github.io/bootstrap/).
   - [Font Awesome](https://fontawesome.com).
+  - [JavaScript MD5](https://blueimp.github.io/JavaScript-MD5/).
+  - [FileSaver.js](https://eligrey.com/blog/saving-generated-files-on-the-client-side/).
 
 ### Utilities
 
@@ -36,3 +38,4 @@ Besides, it is provided interesting utilities in AngularJS:
   - Services to get: language code and XHR response data.
   - Custom filters.
   - Automatic configuration of the translate system.
+  - Autoconfig. of date input (`<md-datepicker>` directive).
