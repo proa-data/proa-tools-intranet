@@ -9,8 +9,8 @@ angular
 		},
 		RANGE_SEP: '-',
 		ANSWERS: [
-			'Sí',
-			'No'
+			'No',
+			'Sí'
 		]
 	} );
 } )();

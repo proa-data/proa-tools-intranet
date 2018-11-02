@@ -1,5 +1,5 @@
 /*!
- * Proa Tools Intranet v1.3.5 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v1.3.6 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
@@ -102,8 +102,8 @@ angular
 		},
 		RANGE_SEP: '-',
 		ANSWERS: [
-			'Yes',
-			'No'
+			'No',
+			'Yes'
 		]
 	} );
 } )();
