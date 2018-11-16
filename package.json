@@ -1,6 +1,6 @@
 {
   "name": "proa-tools-intranet",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "description": "Utilities and dependencies for internal webs of Proa Data.",
   "main": "gulpfile.js",
   "scripts": {
@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/proa-data/proa-tools-intranet/issues"
   },
-  "homepage": "https://github.com/proa-data/proa-tools-intranet#readme",
+  "homepage": "https://github.com/proa-data/proa-tools-intranet",
   "devDependencies": {
     "browser-sync": "^2.26.3",
     "gulp": "^3.9.1",
