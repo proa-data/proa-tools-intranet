@@ -63,5 +63,5 @@ function processLocaleJs(minify) {
 }
 
 function minifyJs(stream) {
-	return stream.pipe($.ngAnnotate()).pipe($.uglify()).pipe($.rename({suffix: '.min'}));
+	return stream.pipe($.ngAnnotate()).pipe($.uglify({output: {comments: '/^!/'}})).pipe($.rename({suffix: '.min'}));
 }

@@ -1,5 +1,5 @@
 /*!
- * Proa Tools Intranet v1.3.7 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v1.3.8 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
