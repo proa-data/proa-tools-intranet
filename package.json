@@ -1,6 +1,6 @@
 {
   "name": "proa-tools-intranet",
-  "version": "1.3.9",
+  "version": "1.4.0",
   "description": "Utilities and dependencies for internal webs of Proa Data.",
   "main": "gulpfile.js",
   "scripts": {
