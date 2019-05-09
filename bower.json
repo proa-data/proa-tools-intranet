@@ -22,24 +22,24 @@
     "demo/"
   ],
   "dependencies": {
-    "jquery": "^3.3.1",
-    "angular": "^1.7.8",
-    "angular-i18n": "^1.7.8",
-    "angular-ui-router": "^0.4.3",
-    "angular-translate": "^2.18.1",
-    "angular-translate-loader-static-files": "^2.18.1",
-    "angular-material": "^1.1.18",
-    "moment": "^2.24.0",
-    "angular-bootstrap": "^2.5.0",
-    "bootstrap": "^3.4.1",
-    "font-awesome": "^5.8.1",
-    "js-md5": "^2.10.0",
+    "jquery": "^3",
+    "angular": "^1",
+    "angular-i18n": "^1",
+    "angular-ui-router": "^0",
+    "angular-translate": "^2",
+    "angular-translate-loader-static-files": "^2",
+    "angular-material": "^1",
+    "moment": "^2",
+    "angular-bootstrap": "^2",
+    "bootstrap": "^3",
+    "font-awesome": "^5",
+    "js-md5": "^2",
     "file-saver": "1.3.4",
-    "proa-tools-records": "^1.5.3",
-    "proa-tools-forms": "^1.1.0"
+    "proa-tools-records": "~1.5",
+    "proa-tools-forms": "~1.1"
   },
   "devDependencies": {
-    "chance": "^1.0.18"
+    "chance": "^1"
   },
   "overrides": {
     "angular": {
