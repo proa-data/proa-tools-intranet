@@ -1,6 +1,6 @@
 {
   "name": "proa-tools-intranet",
-  "version": "1.8.4",
+  "version": "1.8.5",
   "description": "Utilities and dependencies for internal webs of Proa Data.",
   "main": "gulpfile.js",
   "scripts": {
@@ -39,6 +39,8 @@
     "gulp-sync": "^0.1.4",
     "gulp-uglify": "^3.0.1",
     "gulp-useref": "^3.1.6",
-    "gulp-wiredep": "^1.2.0"
+    "gulp-wiredep": "^1.2.0",
+    "lodash.merge": "~>4.6.2",
+    "lodash.template": "~>4.5.0"
   }
 }
