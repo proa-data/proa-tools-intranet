@@ -61,7 +61,7 @@ function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, ge
 	var datetimeFormats = $locale.DATETIME_FORMATS;
 	$mdDateLocale.shortDays = datetimeFormats.SHORTDAY;
 	$mdDateLocale.firstDayOfWeek = [ 1, 2, 3, 4, 5, 6, 0 ][ datetimeFormats.FIRSTDAYOFWEEK ];
-	var momentDateFormat = datetimeFormats.fullShortDate.replace( /y/g, 'Y' ).replace( /d/g, 'D' );
+	var momentDateFormat = datetimeFormats.paddedShortDate.replace( /y/g, 'Y' ).replace( /d/g, 'D' );
 	$mdDateLocale.formatDate = function( date ) {
 		if ( !date )
 			return '';
@@ -106,9 +106,15 @@ angular
 	.module( 'proaTools.intranet' )
 	.value( '$extraLocale', {
 		DATETIME_FORMATS: {
-			fullShort: 'MM/dd/yyyy HH:mm:ss',
-			fullShortDate: 'MM/dd/yyyy',
-			fullShortTime: 'HH:mm:ss'
+			paddedMedium: 'MM/dd/yyyy HH:mm:ss',
+			paddedMediumDate: 'MM/dd/yyyy',
+			paddedMediumTime: 'HH:mm:ss',
+			paddedShort: 'MM/dd/yyyy HH:mm',
+			paddedShortDate: 'MM/dd/yyyy',
+			paddedShortTime: 'HH:mm',
+			filenameMedium: 'M-d-yyyy H.mm.ss',
+			filenameMediumDate: 'M-d-yyyy',
+			filenameMediumTime: 'H.mm.ss'
 		},
 		RANGE_SEP: '-',
 		ANSWERS: [

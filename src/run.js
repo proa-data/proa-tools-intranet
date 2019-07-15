@@ -11,7 +11,7 @@ function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, ge
 	var datetimeFormats = $locale.DATETIME_FORMATS;
 	$mdDateLocale.shortDays = datetimeFormats.SHORTDAY;
 	$mdDateLocale.firstDayOfWeek = [ 1, 2, 3, 4, 5, 6, 0 ][ datetimeFormats.FIRSTDAYOFWEEK ];
-	var momentDateFormat = datetimeFormats.fullShortDate.replace( /y/g, 'Y' ).replace( /d/g, 'D' );
+	var momentDateFormat = datetimeFormats.paddedShortDate.replace( /y/g, 'Y' ).replace( /d/g, 'D' );
 	$mdDateLocale.formatDate = function( date ) {
 		if ( !date )
 			return '';
