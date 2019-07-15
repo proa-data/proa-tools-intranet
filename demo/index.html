@@ -35,11 +35,11 @@
 					<h2>Filters</h2>
 					<dl class="dl-horizontal">
 						<dt>Datetime</dt>
-						<dd>{{vm.now | date:'fullShort'}}</dd>
+						<dd>{{vm.now | date:'paddedMedium'}}</dd>
 						<dt>Date</dt>
-						<dd>{{vm.now | date:'fullShortDate'}}</dd>
+						<dd>{{vm.now | date:'paddedMediumDate'}}</dd>
 						<dt>Time</dt>
-						<dd>{{vm.now | date:'fullShortTime'}}</dd>
+						<dd>{{vm.now | date:'paddedMediumTime'}}</dd>
 						<dt>Currency range</dt>
 						<dd>{{vm.nums | currencyRange}}</dd>
 						<dt>Answer</dt>
