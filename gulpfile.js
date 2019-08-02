@@ -2,6 +2,7 @@ const pckg = require('./package.json'),
 	gulp = require('gulp'),
 	$ = require('gulp-load-plugins')(),
 	gulpSync = $.sync(gulp),
+	injStr = $.injectString,
 	browserSync = require('browser-sync').create();
 
 const baseName = pckg.name,
@@ -31,15 +32,15 @@ gulp.task('scripts', [
 gulp.task('build', gulpSync.sync(['del:dist', 'scripts']));
 
 gulp.task('del:tmp', () => delFolder(paths.tmp));
-gulp.task('index', ['build'], () => gulp.src(paths.demo+'index.html').pipe($.wiredep({devDependencies: true})).pipe($.useref()).pipe($.injectString.replace('{{PACKAGE_NAME}}', packageName)).pipe(gulp.dest(paths.tmp)));
-gulp.task('styles', () => gulp.src(paths.src+'less/index.less').pipe($.injectString.prepend('// bower:less'+nl+'// endbower'+nl)).pipe($.wiredep()).pipe($.less()).pipe(gulp.dest(paths.tmp+'styles/')));
+gulp.task('index', ['build'], () => gulp.src(paths.demo+'index.html').pipe($.wiredep({devDependencies: true})).pipe($.useref()).pipe(injStr.replace('{{PACKAGE_NAME}}', packageName)).pipe(gulp.dest(paths.tmp)));
+gulp.task('styles', () => gulp.src(paths.src+'less/index.less').pipe(injStr.prepend('// bower:less'+nl+'// endbower'+nl)).pipe($.wiredep()).pipe($.less()).pipe(gulp.dest(paths.tmp+'styles/')));
 gulp.task('fonts', () => {
 	const fontsFolder = 'fonts/';
 	return gulp.src(paths.src+fontsFolder+'*').pipe(gulp.dest(paths.tmp+fontsFolder));
 });
 gulp.task('json', () => {
 	const jsonFolder = 'json/lang/';
-	return gulp.src(paths.demo+jsonFolder+'*.json').pipe(gulp.dest(paths.tmp+jsonFolder));
+	return gulp.src(paths.demo+jsonFolder+'*').pipe(gulp.dest(paths.tmp+jsonFolder));
 });
 gulp.task('about', () => gulp.src('package.json').pipe($.about()).pipe(gulp.dest(paths.tmp)));
 
@@ -57,7 +58,7 @@ function delFolder(path) {
 
 function processJs(extraProcess) {
 	const firstJsFile = 'module.js';
-	return processStream(extraProcess, gulp.src(paths.srcScripts+'*.js').pipe($.order([firstJsFile,'!'+firstJsFile])).pipe($.concat(baseName+'.js')).pipe($.injectString.prepend('/*!'+nl+' * '+packageName+' v'+pckg.version+' ('+pckg.homepage+')'+nl+' */'+nl+nl)));
+	return processStream(extraProcess, gulp.src(paths.srcScripts+'*').pipe($.order([firstJsFile,'!'+firstJsFile])).pipe($.concat(baseName+'.js')).pipe(injStr.prepend('/*!'+nl+' * '+packageName+' v'+pckg.version+' ('+pckg.homepage+')'+nl+' */'+nl+nl)));
 }
 
 function minifyJs(stream) {
@@ -66,7 +67,7 @@ function minifyJs(stream) {
 
 function processLocaleJs(extraProcess) {
 	const localeFolder = 'locale/';
-	return processStream(extraProcess, gulp.src(paths.srcScripts+localeFolder+'*.js'), localeFolder);
+	return processStream(extraProcess, gulp.src(paths.srcScripts+localeFolder+'*'), localeFolder);
 }
 
 function processStream(process, stream, subpath) {
