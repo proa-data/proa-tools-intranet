@@ -3,6 +3,7 @@ const pckg = require('./package.json'),
 	$ = require('gulp-load-plugins')(),
 	gulpSync = $.sync(gulp),
 	injStr = $.injectString,
+	mainBowerFiles = require('main-bower-files'),
 	browserSync = require('browser-sync').create();
 
 const baseName = pckg.name,
@@ -34,10 +35,12 @@ gulp.task('build', gulpSync.sync(['del:dist', 'scripts']));
 gulp.task('del:tmp', () => delFolder(paths.tmp));
 gulp.task('index', ['build'], () => gulp.src(paths.demo+'index.html').pipe($.wiredep({devDependencies: true})).pipe($.useref()).pipe(injStr.replace('{{PACKAGE_NAME}}', packageName)).pipe(gulp.dest(paths.tmp)));
 gulp.task('styles', () => gulp.src(paths.src+'less/index.less').pipe(injStr.prepend('// bower:less'+nl+'// endbower'+nl)).pipe($.wiredep()).pipe($.less()).pipe(gulp.dest(paths.tmp+'styles/')));
-gulp.task('fonts', () => {
+gulp.task('fonts:bower', () => gulp.src(mainBowerFiles()).pipe($.filter('**/*.{eot,otf,svg,ttf,woff,woff2}')).pipe(gulp.dest(paths.tmp+'fonts/')));
+gulp.task('fonts:custom', () => {
 	const fontsFolder = 'fonts/';
 	return gulp.src(paths.src+fontsFolder+'*').pipe(gulp.dest(paths.tmp+fontsFolder));
 });
+gulp.task('fonts', ['fonts:bower', 'fonts:custom']);
 gulp.task('json', () => {
 	const jsonFolder = 'json/lang/';
 	return gulp.src(paths.demo+jsonFolder+'*').pipe(gulp.dest(paths.tmp+jsonFolder));
