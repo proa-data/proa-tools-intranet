@@ -1,0 +1,24 @@
+//
+// Typography
+// --------------------------------------------------
+
+
+// Emphasis & misc
+// -------------------------
+
+// Contextual colors
+.text-gold {
+	.text-emphasis-variant(@gold);
+}
+
+
+@font-face {
+	@font-name: "quicksand";
+	font-family: Quicksand;
+	src: url('@{font-path}@{font-name}-regular.eot');
+	src: url('@{font-path}@{font-name}-regular.eot?#iefix') format('embedded-opentype'),
+		url('@{font-path}@{font-name}-regular.woff2') format('woff2'),
+		url('@{font-path}@{font-name}-regular.woff') format('woff'),
+		url('@{font-path}@{font-name}-regular.ttf') format('truetype'),
+		url('@{font-path}@{font-name}-regular.svg#quicksandregular') format('svg');
+}

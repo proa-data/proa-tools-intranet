@@ -1,7 +1,11 @@
 {
   "name": "proa-tools-intranet",
   "description": "Utilities and dependencies for internal webs of Proa Data.",
-  "main": "./dist/proa-tools-intranet.js",
+  "main": [
+    "./src/less/index.less",
+    "./src/fonts/*",
+    "./dist/proa-tools-intranet.js"
+  ],
   "authors": [
     "Miquel Alejandro Vicens Dalmau <mvicens@proadata.com>"
   ],
@@ -49,7 +53,7 @@
       ]
     },
     "bootstrap": {
-      "main": "dist/css/bootstrap.css"
+      "main": "less/bootstrap.less"
     }
   }
 }

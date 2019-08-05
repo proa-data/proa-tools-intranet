@@ -1,0 +1,62 @@
+//
+// Tables
+// --------------------------------------------------
+
+
+// Baseline styles
+
+.table {
+	> thead,
+	> tbody,
+	> tfoot {
+		> tr > th {
+			color: #fff;
+			background-color: @brand-secondary;
+		}
+	}
+}
+
+
+// Table backgrounds
+
+.table > thead > tr,
+.table > tbody > tr,
+.table > tfoot > tr {
+	> td.success,
+	> th.success,
+	&.success > td,
+	&.success > th {
+		color: @state-success-text;
+	}
+	> td.warning,
+	> th.warning,
+	&.warning > td,
+	&.warning > th {
+		color: @state-warning-text;
+	}
+	> td.danger,
+	> th.danger,
+	&.danger > td,
+	&.danger > th {
+		color: @state-danger-text;
+	}
+}
+
+
+// Responsive tables
+
+.table-responsive {
+	margin-bottom: @line-height-computed;
+	&.max-height {
+		max-height: (@line-height-computed * 32);
+	}
+	&.table-responsive-top-scrollbar {
+		&,
+		> .table {
+			.rotateX(180deg);
+		}
+	}
+	> .table {
+		margin-bottom: 0;
+	}
+}
