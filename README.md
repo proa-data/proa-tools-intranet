@@ -39,3 +39,5 @@ Besides, it is provided interesting utilities in AngularJS:
   - Custom filters.
   - Automatic configuration of the translate system.
   - Autoconfig. of date input (`<md-datepicker>` directive).
+
+And a customized design is applied (through Less and Bootstrap's config.).
