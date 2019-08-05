@@ -54,6 +54,15 @@
     },
     "bootstrap": {
       "main": "less/bootstrap.less"
+    },
+    "font-awesome": {
+      "main": [
+        "less/fontawesome.less",
+        "less/solid.less",
+        "less/regular.less",
+        "less/brands.less",
+        "webfonts/*"
+      ]
     }
   }
 }

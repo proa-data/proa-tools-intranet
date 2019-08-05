@@ -33,7 +33,7 @@
 			</div>
 			<div class="col-xs-12 col-md-6">
 				<section ng-controller="FiltersController as vm">
-					<h2>Filters</h2>
+					<h2><span class="fas fa-filter"></span> Filters</h2>
 					<dl class="dl-horizontal">
 						<dt>Datetime</dt>
 						<dd>{{vm.now | date:'paddedMedium'}}</dd>
@@ -51,7 +51,7 @@
 			<div class="clearfix"></div>
 			<div class="col-xs-12 col-md-6">
 				<section>
-					<h2>Translate</h2>
+					<h2><span class="fas fa-language"></span> Translate</h2>
 					<p translate="firstText"></p>
 					<p translate="secondText"></p>
 				</section>

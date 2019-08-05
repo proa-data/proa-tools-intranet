@@ -40,4 +40,4 @@ Besides, it is provided interesting utilities in AngularJS:
   - Automatic configuration of the translate system.
   - Autoconfig. of date input (`<md-datepicker>` directive).
 
-And a customized design is applied (through Less and Bootstrap's config.).
+And a customized design is applied (through Less), configuring Bootstrap and Font Awesome.
