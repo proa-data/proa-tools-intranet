@@ -36,6 +36,7 @@ Besides, it is provided interesting utilities in AngularJS:
 
   - Package info (through web console).
   - Services to get: language code and XHR response data.
+  - DataSnap API.
   - Custom filters.
   - Automatic configuration of the translate system.
   - Autoconfig. of date input (`<md-datepicker>` directive).
