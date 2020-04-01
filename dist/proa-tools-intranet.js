@@ -1,5 +1,5 @@
 /*!
- * Proa Tools Intranet v2.3.0 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v2.4.0 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
@@ -102,7 +102,7 @@ function getXhrResponseData( $http ) {
 	};
 }
 
-function dsApi( $http, $rootScope, uibPaginationConfig ) {
+function dsApi( $http, $rootScope ) {
 	var errorAlert = angular.noop,
 		logout = angular.noop,
 		path = undefined;
