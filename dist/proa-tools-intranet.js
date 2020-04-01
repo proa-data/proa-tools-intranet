@@ -102,7 +102,7 @@ function getXhrResponseData( $http ) {
 	};
 }
 
-function dsApi( $http, $rootScope, uibPaginationConfig ) {
+function dsApi( $http, $rootScope ) {
 	var errorAlert = angular.noop,
 		logout = angular.noop,
 		path = undefined;
