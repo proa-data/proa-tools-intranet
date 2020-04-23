@@ -1,5 +1,5 @@
 /*!
- * Proa Tools Intranet v2.5.1 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v2.6.0 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
@@ -131,7 +131,11 @@ function dsApi( $http, $rootScope ) {
 	}
 
 	function getHttpPromise( subpath, params ) {
-		return $http.post( path + subpath, { _parameters: params || [] }, { headers: { 'User-Token': $rootScope.userToken } } ).then( successCallback, errorCallback );
+		var headers = { 'User-Token': $rootScope.userToken },
+			userData = $rootScope.userData;
+		if ( userData )
+			headers[ 'User-Company' ] = userData.id_empresa;
+		return $http.post( path + subpath, { _parameters: params || [] }, { headers: headers } ).then( successCallback, errorCallback );
 
 		function successCallback( response ) {
 			var responseData = response.data,
