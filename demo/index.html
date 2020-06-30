@@ -64,6 +64,25 @@
 					</div>
 				</section>
 			</div>
+			<div class="clearfix"></div>
+			<div class="col-xs-12 col-md-6">
+				<section ng-controller="SelectsController as vm">
+					<h2><span class="fas fa-list"></span> Selects</h2>
+					<div class="form-group">
+						<label>No multiple</label>
+						<md-select ng-model="vm.params.noMultiple">
+							<md-option ng-repeat="item in vm.list" ng-value="item.code">{{item.name}}</md-option>
+						</md-select>
+					</div>
+					<div class="form-group">
+						<label>Multiple</label>
+						<md-select ng-model="vm.params.multiple" multiple>
+							<md-option ng-repeat="item in vm.list" ng-value="item.code">{{item.name}}</md-option>
+						</md-select>
+					</div>
+					<button type="button" class="btn btn-default" ng-click="vm.change()">Change list</button>
+				</section>
+			</div>
 		</div>
 	</main>
 </div>
