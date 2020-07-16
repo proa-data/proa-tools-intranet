@@ -42,7 +42,7 @@
     "gulp-uglify": "^3.0.1",
     "gulp-useref": "^3.1.6",
     "gulp-wiredep": "^1.2.0",
-    "lodash": "~>4.17.14",
+    "lodash": "~>4.17.19",
     "lodash.merge": "~>4.6.2",
     "lodash.template": "~>4.5.0",
     "main-bower-files": "^2.13.1"
