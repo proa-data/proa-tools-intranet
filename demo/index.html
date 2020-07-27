@@ -77,7 +77,7 @@
 					<div class="form-group">
 						<label>Multiple</label>
 						<md-select ng-model="vm.params.multiple" multiple>
-							<md-option ng-repeat="item in vm.list" ng-value="item.code">{{item.name}}</md-option>
+							<md-option ng-repeat="item in vm.list | orderBy:'code'" ng-value="item.code">{{item.name}}</md-option>
 						</md-select>
 					</div>
 					<button type="button" class="btn btn-default" ng-click="vm.change()">Change list</button>

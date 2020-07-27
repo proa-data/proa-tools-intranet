@@ -13,7 +13,7 @@ function mdSelect( $timeout ) {
 		var isMultiple = angular.isDefined( tAttrs.multiple ),
 			selectedProp = tAttrs.ngModel,
 			elem = tElement.find( 'md-option' ),
-			listProp = elem.attr( 'ng-repeat' ).split( 'in' )[ 1 ],
+			listProp = elem.attr( 'ng-repeat' ).split( 'in' )[ 1 ].split( '|' )[ 0 ],
 			idProp = elem.attr( 'ng-value' ).split( '.' )[ 1 ];
 		return function( scope ) {
 			scope.$watch( listProp, function( array ) {
