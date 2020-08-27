@@ -41,5 +41,6 @@ Besides, it is provided interesting utilities in AngularJS:
   - Automatic configuration of the translate system.
   - Autoconfig. of date input (`<md-datepicker>` directive).
   - Autoadjust of selected value(s) in Material selects (`<md-select>` directive) when array list changes.
+  - Integrated system of login, header, main content and homepage.
 
 And a customized design is applied (through Less), configuring Bootstrap and Font Awesome.

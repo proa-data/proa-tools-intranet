@@ -1,5 +1,5 @@
 /*!
- * Proa Tools Intranet v2.7.0 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v2.8.0 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
@@ -20,6 +20,454 @@ function config( $translateProvider ) {
 			suffix: '.json'
 		} )
 		.useSanitizeValueStrategy( null );
+}
+} )();
+( function() {
+angular
+	.module( 'proaTools.intranet' )
+	.constant( 'PT_TEMPLATES', {
+		login: '<div class="container loginContent">' +
+				'<div class="banner">' +
+					'<img class="img-responsive center-block" src="img/logo.png">' +
+				'</div>' +
+				'<div class="loginForm">' +
+					'<div class="wellcome">' +
+						'<p translate="login.wellcome1"></p>' +
+						'<p translate="login.wellcome2"></p>' +
+					'</div>' +
+					'<form class="form-horizontal m-bottom" name="loginForm" novalidate ng-submit="submit(loginForm)">' +
+						'<div class="form-group" ng-class="{\'has-error\': submitted&&loginForm.user.$error.required}">' +
+							'<label class="col-sm-2 control-label"><span class="fas fa-user fa-lg"></span></label>' +
+							'<div class="col-sm-10">' +
+								'<input type="text" class="form-control" placeholder="{{\'login.name\' | translate}}" name="user" ng-model="loginData.user" required>' +
+							'</div>' +
+						'</div>' +
+						'<div class="form-group" ng-class="{\'has-error\': submitted&&loginForm.pass.$error.required}">' +
+							'<label class="col-sm-2 control-label"><span class="fas fa-lock fa-lg"></span></label>' +
+							'<div class="col-sm-10">' +
+								'<input type="password" class="form-control" placeholder="{{\'login.password\' | translate}}" name="pass" ng-model="loginData.pass" required>' +
+							'</div>' +
+						'</div>' +
+						'<div class="form-group" ng-if="selectCompany">' +
+							'<label class="col-sm-2 control-label"><span class="fas fa-users fa-lg"></span></label>' +
+							'<div class="col-sm-10">' +
+								'<select class="form-control" name="company" ng-model="userData.id_empresa" ng-options="item.id as item.name for item in companyItems" ng-change="submitWithCompany()"></select>' +
+							'</div>' +
+						'</div>' +
+						'<button type="submit" class="btn btn-primary btn-block" ng-disabled="!isready" translate="login.login"></button>' +
+					'</form>' +
+					'<p class="alert alert-danger" ng-show="submitted&&loginForm.company.$error.required"><span translate="login.error.company1"><strong translate="login.error.company"></strong>.</p>' +
+					'<p class="alert alert-danger" ng-show="submitted&&loginForm.user.$error.required"><span translate="error.initMas"></span><strong translate="login.error.name"></strong>.</p>' +
+					'<p class="alert alert-danger" ng-show="submitted&&loginForm.pass.$error.required"><span translate="error.initFem"></span> <strong translate="login.error.password></strong>.</p>' +
+					'<p class="alert alert-danger" ng-show="submitted&&notPermiss"><span translate="login.error.initNoLogin"></span><strong translate="login.error.noLogin"></strong>.</p>' +
+					'<p class="alert alert-danger" ng-show="requiredUpdatePassword"><span translate="login.error.update_password_required"></span>.</p>' +
+					'<p class="alert alert-danger" ng-show="submitted&&errorServer"><span translate="login.error.server1"></span><strong translate="login.error.server2"></strong>.</p>' +
+				'</div>' +
+			'</div>',
+		main: '<header>' +
+				'<nav class="navbar navbar-default">' +
+					'<div class="container-fluid">' +
+						'<div class="navbar-header">' +
+							'<button type="button" class="navbar-toggle collapsed" ng-click="isNavCollapsed=!isNavCollapsed">' +
+								'<span class="icon-bar"></span>' +
+								'<span class="icon-bar"></span>' +
+								'<span class="icon-bar"></span>' +
+							'</button>' +
+							'<div class="navbar-brand" ng-if="userData.logo_contenido">' +
+								'<img ng-src="data:image/png;base64,{{userData.logo_contenido}}">' +
+							'</div>' +
+						'</div>' +
+						'<div class="navbar-text">' +
+							'<ol class="breadcrumb">' +
+								'<li ng-repeat="item in breadcrumbList" ng-class="{active: item.sref}">' +
+									'<a ui-sref="{{item.sref}}" translate="{{item.translationId}}" ng-if="item.sref"></a>' +
+									'<span translate="{{item.translationId}}" ng-if="!item.sref"></span>' +
+								'</li>' +
+							'</ol>' +
+						'</div>' +
+						'<ul class="nav navbar-nav navbar-right">' +
+							'<li uib-dropdown>' +
+								'<a href="" uib-dropdown-toggle role="button">' +
+									'{{userData.id_usuario}}' +
+									' ' +
+									'<img class="img-responsive img-circle" ng-src="data:image/jpeg;base64,{{userData.contenido_foto}}" onerror="this.onerror=null;this.src=\'img/default-avatar.jpg\'">' +
+									' ' +
+									'<span class="caret"></span>' +
+								'</a>' +
+								'<ul class="dropdown-menu">' +
+									'<li class="dropdown-header">{{userData.nombre}}</li>' +
+									'<li role="separator" class="divider"></li>' +
+									'<li><a href="" ng-click="openModal()"><span class="fas fa-user fa-fw"></span> <span translate="manageUser.title_dropdown"></span></a></li>' +
+									'<li><a href="" ng-click="logout()"><span class="fas fa-power-off fa-fw"></span> <span translate="manageUser.logout_dropdown"></span></a></li>' +
+								'</ul>' +
+							'</li>' +
+						'</ul>' +
+						'<div class="navbar-collapse" uib-collapse="isNavCollapsed">' +
+							'<ul class="nav navbar-nav">' +
+								'<li ng-repeat-start="item in navList" ng-if="isDisplayed(item)&&item.submenu">' +
+									'<a href="" ng-init="isSubnavCollapsed=true" ng-click="isSubnavCollapsed=!isSubnavCollapsed">' +
+										'<span ng-include="\'nav-content.html\'"></span>' +
+										' ' +
+										'<span class="caret"></span>' +
+									'</a>' +
+									'<ul class="nav navbar-nav" uib-collapse="isSubnavCollapsed">' +
+										'<li ui-sref-active="active" ng-include="\'nav-link.html\'" ng-repeat="item in item.submenu" ng-if="isDisplayed(item)"></li>' +
+									'</ul>' +
+								'</li>' +
+								'<li ui-sref-active="active" ng-include="\'nav-link.html\'" ng-repeat-end ng-if="isDisplayed(item)&&!item.submenu"></li>' +
+							'</ul>' +
+						'</div>' +
+					'</div>' +
+				'</nav>' +
+				'<script type="text/ng-template" id="nav-link.html">' +
+				'<a ui-sref="main.{{item.name}}" ng-include="\'nav-content.html\'"></a>' +
+				'</script>' +
+				'<script type="text/ng-template" id="nav-content.html">' +
+				'<span class="fa-fw" ng-class="item.iconClassName"></span>' +
+				' ' +
+				'<span translate="{{item.name}}.title"></span>' +
+				'</script>' +
+			'</header>' +
+			'<main class="container-fluid" ui-view></main>',
+		modal: '<md-dialog flex="50">' +
+				'<md-toolbar>' +
+					'<div class="md-toolbar-tools">' +
+						'<h2 translate="manageUser.title"></h2>' +
+						'<span flex></span>' +
+						'<md-button class="md-icon-button" ng-click="closeDialog()"><span class="fas fa-times"></span></md-button>' +
+					'</div>' +
+				'</md-toolbar>' +
+				'<md-dialog-content>' +
+					'<md-tabs md-selected="modalTabIndex" md-dynamic-height md-border-bottom>' +
+						'<md-tab label="updateData">' +
+							'<md-tab-label><span translate="manageUser.updateData"></span></md-tab-label>' +
+							'<md-tab-body>' +
+								'<div class="tab-body">' +
+									'<form ng-submit="saveData()">' +
+										'<p class="alert alert-danger" translate="error.noUserData" ng-show="isNoUserData()"></p>' +
+										'<div class="form-group">' +
+											'<label translate="manageUser.nif"></label>' +
+											'<input type="text" class="form-control" ng-model="data.nif" required>' +
+										'</div>' +
+										'<div class="form-group">' +
+											'<label translate="manageUser.email"></label>' +
+											'<input type="email" class="form-control" ng-model="data.email" required>' +
+										'</div>' +
+										'<button type="submit" class="btn btn-primary" translate="save"></button>' +
+									'</form>' +
+								'</div>' +
+							'</md-tab-body>' +
+						'</md-tab>' +
+						'<md-tab label="updatePassword">' +
+							'<md-tab-label><span translate="manageUser.updatePassword"></span></md-tab-label>' +
+							'<md-tab-body>' +
+								'<div class="tab-body">' +
+									'<form ng-submit="saveNewPassword()">' +
+										'<div class="form-group" ng-class="{\'has-error\': failOldPassword&&submittedResetPassword}">' +
+											'<label translate="manageUser.password.current"></label>' +
+											'<input type="password" ng-model="resetPasswordForm.current_password" class="form-control" required>' +
+										'</div>' +
+										'<div class="form-group">' +
+											'<label translate="manageUser.password.new"></label>' +
+											'<input type="password" ng-model="resetPasswordForm.new_password" class="form-control" required>' +
+										'</div>' +
+										'<div class="form-group" ng-class="{\'has-error\': failSameNewPassword&&submittedResetPassword}">' +
+											'<label translate="manageUser.password.repeatNew"></label>' +
+											'<input type="password" ng-model="resetPasswordForm.repeat_new_password" class="form-control" required>' +
+										'</div>' +
+										'<p class="alert alert-danger" translate="manageUser.password.fail_new_password" ng-if="failSameNewPassword"></p>' +
+										'<p class="alert alert-danger" translate="manageUser.password.fail_old_password" ng-if="failOldPassword"></p>' +
+										'<button type="submit" class="btn btn-primary">' +
+											'<span class="fas fa-sync-alt"></span>' +
+											'<span translate="manageUser.password.update"></span>' +
+										'</button>' +
+									'</form>' +
+								'</div>' +
+							'</md-tab-body>' +
+						'</md-tab>' +
+						'<md-tab label="updatePicture">' +
+							'<md-tab-label><span translate="manageUser.updatePicture"></span></md-tab-label>' +
+							'<md-tab-body>' +
+								'<div class="tab-body text-center">' +
+									'<img id="profileImage" ng-src="data:image/jpeg;base64,{{photoContent}}" class="img-responsive img-circle center-block m-bottom" alt="Profile picture" onerror="this.onerror = null;this.src=\'img/default-avatar.jpg\'" width="150">' +
+									'<input type="file" id="input-new-image" accept="image/*;capture=camera" onchange="angular.element(this).scope().processNewImage(this)" image="" resize-max-height="1000" resize-max-width="1000" resize-quality="0.7" resize-type="image/jpg" accept=".jpg,.jpeg,.png" class="hidden">' +
+									'<button type="button" class="btn btn-primary" ng-click="getNewImage()"><span class="fas fa-camera fa-2x"></span></button>' +
+								'</div>' +
+							'</md-tab-body>' +
+						'</md-tab>' +
+					'</md-tabs>' +
+				'</md-dialog-content>' +
+			'</md-dialog>',
+		home: '<h1 class="h3" translate="largeTitle"></h1>'
+	} );
+} )();
+( function() {
+angular
+	.module( 'proaTools.intranet' )
+	.controller( 'PtLoginController', PtLoginController )
+	.controller( 'PtMainController', PtMainController )
+	.controller( 'PtModalController', PtModalController );
+
+function PtLoginController( $scope, ptSessionService, ptApiService, $rootScope, ptOpenProfileModal, dataService, $state ) {
+	$scope.loginData = {};
+	$scope.selectCompany = false;
+	$scope.isready = true;
+	$scope.submitted = false;
+	$scope.submit = submit;
+	$scope.submitWithCompany = submitWithCompany;
+
+	activate();
+
+	function activate() {
+		ptSessionService.logout();
+	}
+
+	function submit( loginForm ) {
+		if ( loginForm.$invalid ) {
+			$scope.submitted = true;
+			return;
+		}
+		ptApiService.doLogin( $scope.loginData.user, md5( $scope.loginData.pass ) ).then( function( data ) {
+			if ( data ) {
+				ptSessionService.start( data );
+				var userData = $rootScope.userData;
+				if ( userData && userData.validado ) {
+					$scope.requiredUpdatePassword = false;
+					if ( $scope.loginData.user == $scope.loginData.pass ) {
+						ptOpenProfileModal( 1 ).then( function( answer ) {
+							if ( answer )
+								getCompanies();
+							else
+								$scope.requiredUpdatePassword = true;
+						} );
+					} else
+						getCompanies();
+				} else {
+					if ( userData === undefined )
+						$scope.errorServer = true;
+					else
+						$scope.notPermiss = true;
+					$scope.submitted = true;
+				}
+			} else {
+				if ( data === undefined )
+					$scope.errorServer = true;
+				else
+					$scope.notPermiss = true;
+				$scope.submitted = true;
+			}
+		} );
+	}
+
+	function submitWithCompany() {
+		if ( $rootScope.userData.id_empresa != 0 ) {
+			angular.forEach( $scope.companyItems, function( company ) {
+				if ( company.id == $rootScope.userData.id_empresa )
+					$rootScope.userData.id_oficina = company.officeCode;
+			} );
+			ptSessionService.start( $rootScope.userData );
+			goToHome();
+		} else
+			$scope.submitted = true;
+	}
+
+	function getCompanies() {
+		$scope.isready = false;
+		dataService.getCompanies().then( function( data ) {
+			if ( data ) {
+				$scope.companyItems = data;
+				if ( $scope.companyItems.length == 1 ) {
+					$rootScope.userData.id_empresa = $scope.companyItems[ 0 ].id;
+					$rootScope.userData.id_oficina = $scope.companyItems[ 0 ].officeCode;
+					ptSessionService.start( $rootScope.userData );
+					goToHome();
+				} else
+					$scope.selectCompany = true;
+			} else
+				$scope.errorServer = true;
+			$scope.isready = !$scope.isready;
+		} );
+	}
+
+	function goToHome() {
+		$state.go( 'main.home' );
+	}
+}
+
+function PtMainController( $scope, $rootScope, ptSessionService, ptApiService, ptScreens, ptOpenProfileModal ) {
+	$scope.navList = [];
+
+	var displays = {};
+	$scope.isDisplayed = isDisplayed;
+
+	$scope.logout = logout;
+	$scope.openModal = openModal;
+
+	activate();
+
+	function activate() {
+		var userData = $rootScope.userData;
+		if ( !ptSessionService.isUserAuthorized() || ( userData === null ) ) {
+			logout();
+			return;
+		}
+		ptApiService.getExtraUserData( userData.id_usuario ).then( function( data ) {
+			userData.nif = data.nif;
+			userData.email = data.email;
+			if ( !( userData.nif && userData.email ) )
+				openModal();
+		} );
+
+		$scope.navList = ptScreens;
+
+		var list = [];
+		angular.forEach( ptScreens, function( obj ) {
+			var submenu = obj.submenu;
+			if ( submenu )
+				angular.forEach( submenu, function( obj2 ) {
+					obj2 = angular.copy( obj2 );
+					obj2.parent = obj.name;
+					list.push( obj2 );
+				} );
+			else
+				list.push( obj );
+		} );
+
+		var permissionsList = []
+		angular.forEach( list, function( obj ) {
+			permissionsList.push( obj.permission );
+		} );
+		ptApiService.checkPermissions( permissionsList.join() ).then( function( data ) {
+			if ( data ) {
+				var permissions = data[ 0 ].permisos;
+
+				var userData = ptSessionService.getUserData();
+				userData.permisos = permissions;
+				ptSessionService.setUserData( userData );
+
+				angular.forEach( permissions, function( obj ) {
+					angular.forEach( list, function( obj2 ) {
+						if ( obj.recurso == obj2.permission ) {
+							var isVisible = !!obj.visualizar;
+							displays[ obj2.name ] = isVisible;
+							if ( isVisible ) {
+								var parent = obj2.parent;
+								if ( parent )
+									displays[ parent ] = true;
+							}
+						}
+					} );
+				} );
+			}
+		} );
+	}
+
+	function isDisplayed( obj ) {
+		return displays[ obj.name ];
+	}
+
+	function logout() {
+		ptSessionService.logout();
+	}
+
+	function openModal() {
+		ptOpenProfileModal();
+	}
+}
+
+function PtModalController( $rootScope, $scope, modalTabIndex, $mdDialog, dsApi, ptSessionService, ptApiService ) {
+	var userData = $rootScope.userData;
+
+	$scope.modalTabIndex = modalTabIndex;
+	$scope.closeDialog = closeDialog;
+	$scope.data = {
+		nif: userData.nif,
+		email: userData.email
+	};
+	$scope.isNoUserData = isNoUserData;
+	$scope.saveData = saveData;
+	$scope.saveNewPassword = saveNewPassword;
+	$scope.submittedResetPassword = false;
+	$scope.photoContent = userData.contenido_foto;
+	$scope.getNewImage = getNewImage;
+	$scope.processNewImage = processNewImage;
+
+	function closeDialog() {
+		$mdDialog.hide();
+	}
+
+	function isNoUserData() {
+		var data = $scope.data;
+		return !( data.nif && data.email );
+	}
+
+	function saveData() {
+		var data = angular.copy( $scope.data );
+		dsApi.request( 'GuardarDatosUsuario', [ userData.id_usuario, data ] ).then( function() {
+			userData.nif = data.nif;
+			userData.email = data.email;
+			ptSessionService.setUserData( userData );
+			closeDialog();
+		} );
+	}
+
+	function saveNewPassword() {
+		$scope.submittedResetPassword = true;
+		$scope.failSameNewPassword = false;
+		$scope.failOldPassword = false;
+		$scope.emptyNewPassword = false;
+		var id_usuario = userData.id_usuario;
+		if ( $scope.resetPasswordForm == null )
+			$scope.emptyNewPassword = true;
+		else {
+			var old_password = $scope.resetPasswordForm.current_password,
+				new_password = $scope.resetPasswordForm.new_password,
+				repeat_new_password = $scope.resetPasswordForm.repeat_new_password;
+			if ( new_password !== repeat_new_password )
+				$scope.failSameNewPassword = true;
+			else if ( new_password == null )
+				$scope.emptyNewPassword = true;
+			else {
+				ptApiService.resetPassword( id_usuario, md5( old_password ), md5( new_password ) ).then( function( data ) {
+					var success = data;
+					if ( success[ 0 ] == true )
+						closeDialog( success[ 0 ] );
+					else
+						$scope.failOldPassword = true;
+				} );
+			}
+		}
+	}
+
+	function getNewImage() {
+		document.getElementById( 'input-new-image' ).click();
+		$scope.invalidQRCode = false;
+		$scope.isRequired = false;
+		$scope.noResultsVehicle = false;
+		$scope.vehicleNumberNew = '';
+	}
+
+	function processNewImage( target ) {
+		$scope.errorUpdatingPicture = false;
+		var id_usuario = userData.id_usuario,
+			files = target.files,
+			reader = new FileReader();
+		reader.onload = function() {
+			var dataUri = reader.result;
+			ptApiService.updateUserPicture( id_usuario, dataUri ).then( function( data ) {
+				var response = data;
+				if ( response[0].fields.Fresultado == true ) {
+					var contentDataUri = dataUri.substring( dataUri.indexOf( ',' ) + 1 );
+					userData.ruta_foto = response[ 0 ].fields.Fmensaje;
+					userData.contenido_foto = contentDataUri;
+					ptSessionService.setUserData( userData );
+					document.getElementById( 'profileImage' ).src = dataUri;
+				} else
+					$scope.errorUpdatingPicture = true;
+			} );
+		};
+		reader.readAsDataURL( files[ 0 ] );
+	}
 }
 } )();
 ( function() {
@@ -94,9 +542,90 @@ function answer( $locale ) {
 ( function() {
 angular
 	.module( 'proaTools.intranet' )
+	.provider( 'ptScreens', ptScreensProvider );
+
+function ptScreensProvider( $stateProvider, PT_TEMPLATES, $urlRouterProvider ) {
+	var list = [];
+	this.$get = $get;
+	this.setAll = setAll;
+
+	function $get() {
+		return list;
+	}
+
+	function setAll( list2 ) {
+		var HOME_URL = 'home';
+		$stateProvider
+			.state( 'login', {
+				url: '/login',
+				template: PT_TEMPLATES.login,
+				controller: 'PtLoginController'
+			} )
+			.state( 'main', {
+				url: '/',
+				template: PT_TEMPLATES.main,
+				controller: 'PtMainController',
+			} )
+			.state( 'main.home', {
+				url: HOME_URL,
+				template: PT_TEMPLATES.home
+			} );
+		$urlRouterProvider.otherwise( '/' + HOME_URL );
+
+		var submenus = {};
+		angular.forEach( list2, function( obj ) {
+			var parent = obj.parent;
+
+			var obj2 = {
+					name: obj.name,
+					permission: obj.permission,
+					iconClassName: obj.iconClassName
+				};
+			if ( parent ) {
+				var submenu = submenus[ parent ];
+				if ( !submenu )
+					submenu = submenus[ parent ] = [];
+				submenu.push( obj2 );
+			} else
+				list.push( obj2 );
+
+			if ( obj.noTemplate )
+				return;
+			var name = obj.name,
+				kcName = _.kebabCase( name ),
+				stateConfig = {
+					url: kcName,
+					templateUrl: 'app/' + kcName + '/view.html'
+				},
+				stateName = 'main.' + name,
+				param = obj.param;
+			if ( !obj.noController )
+				stateConfig.controller = _.upperFirst( name ) + 'Controller';
+			if ( parent )
+				stateConfig.data = { parentMenu: parent };
+			$stateProvider.state( stateName, stateConfig );
+			if ( param ) {
+				var stateConfig2 = angular.copy( stateConfig );
+				stateConfig2.url = '/:' + param;
+				$stateProvider.state( stateName + '.' + param, stateConfig2 );
+			}
+		} );
+
+		angular.forEach( submenus, function( submenu, name ) {
+			angular.forEach( list, function( obj ) {
+				if ( obj.name == name )
+					obj.submenu = submenu;
+			} );
+		} );
+	}
+}
+} )();
+( function() {
+angular
+	.module( 'proaTools.intranet' )
 	.run( runBlock );
 
-function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, getXhrResponseData ) {
+function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, getXhrResponseData, $rootScope, ptSessionService ) {
 	$translate.use( getLang() );
 
 	angular.merge( $locale, $extraLocale );
@@ -122,6 +651,35 @@ function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, ge
 	getXhrResponseData( 'about.json' ).then( function( data ) {
 		console.info( 'Package: "' + data.name + '" v' + data.version + '.' );
 	} );
+
+	$rootScope.$on( '$stateChangeSuccess', function( event, toState ) {
+		var stateName = toState.name,
+			translationId = stateName.split( '.' )[ 1 ],
+			breadcrumbList = [],
+			stateData = toState.data;
+
+		$rootScope.pageTitleTranslationId = getTranslationId( translationId, 'largeTitle' );
+
+		if ( translationId )
+			breadcrumbList.push( {
+				translationId: getTranslationId( translationId ),
+				sref: stateName
+			} );
+		if ( stateData ) {
+			var parentMenu = stateData.parentMenu;
+			if ( parentMenu )
+				breadcrumbList.unshift( {
+					translationId: getTranslationId( parentMenu )
+				} );
+		}
+		$rootScope.breadcrumbList = breadcrumbList;
+	} );
+
+	$rootScope.userData = ptSessionService.getUserData();
+
+	function getTranslationId( str, str2 ) {
+		return ( str ? str + '.' : '' ) + ( str2 || 'title' );
+	}
 }
 } )();
 ( function() {
@@ -130,7 +688,10 @@ angular
 	.factory( 'getLang', getLang )
 	.factory( 'getXhrResponseData', getXhrResponseData )
 	.factory( 'dsApi', dsApi ) // DataSnap
-	.factory( 'springApi', springApi );
+	.factory( 'springApi', springApi )
+	.factory( 'ptApiService', ptApiService )
+	.factory( 'ptSessionService', ptSessionService )
+	.factory( 'ptOpenProfileModal', ptOpenProfileModal );
 
 function getLang( $locale ) {
 	return function() {
@@ -146,24 +707,18 @@ function getXhrResponseData( $http ) {
 	};
 }
 
-function dsApi( $http, $rootScope ) {
+function dsApi( $http, ptSessionService, $rootScope ) {
 	var errorAlert = angular.noop,
-		logout = angular.noop,
 		path = undefined;
 
 	return {
 		setErrorAlert: setErrorAlert,
-		setLogout: setLogout,
 		setPath: setPath,
 		request: getBuiltFn
 	};
 
 	function setErrorAlert( fn ) {
 		errorAlert = fn;
-	}
-
-	function setLogout( fn ) {
-		logout = fn;
 	}
 
 	function setPath( domain ) {
@@ -175,7 +730,7 @@ function dsApi( $http, $rootScope ) {
 	}
 
 	function getHttpPromise( subpath, params ) {
-		var headers = { 'User-Token': $rootScope.userToken },
+		var headers = { 'User-Token': ptSessionService.getToken() },
 			userData = $rootScope.userData;
 		if ( userData )
 			headers[ 'User-Company' ] = userData.id_empresa;
@@ -200,7 +755,7 @@ function dsApi( $http, $rootScope ) {
 				rde = responseData.error;
 			console.error( rde || responseData );
 			if ( response.status == 403 || ( rde && rde.includes( 'NOT_VALIDATED' ) ) )
-				logout();
+				ptSessionService.logout();
 			else
 				errorAlert();
 			throw responseData;
@@ -208,14 +763,12 @@ function dsApi( $http, $rootScope ) {
 	}
 }
 
-function springApi( $rootScope, uibPaginationConfig, $http ) {
+function springApi( ptSessionService, uibPaginationConfig, $http ) {
 	var errorAlert = angular.noop,
-		logout = angular.noop,
 		path = undefined;
 
 	return {
 		setErrorAlert: setErrorAlert,
-		setLogout: setLogout,
 		setPath: setPath,
 
 		// Requests
@@ -227,10 +780,6 @@ function springApi( $rootScope, uibPaginationConfig, $http ) {
 
 	function setErrorAlert( fn ) {
 		errorAlert = fn;
-	}
-
-	function setLogout( fn ) {
-		logout = fn;
 	}
 
 	function setPath( newPath ) {
@@ -247,7 +796,7 @@ function springApi( $rootScope, uibPaginationConfig, $http ) {
 		var config = {
 			method: method,
 			url: path + subpath,
-			headers: { 'Authorization': 'Bearer ' + $rootScope.userToken }
+			headers: { 'Authorization': 'Bearer ' + ptSessionService.getToken() }
 		};
 
 		params = params || {};
@@ -282,12 +831,104 @@ function springApi( $rootScope, uibPaginationConfig, $http ) {
 			if ( 'message' in responseData )
 				console.error( responseData.message );
 			if ( response.status == 401 )
-				logout();
+				ptSessionService.logout();
 			else
 				errorAlert();
 			throw responseData;
 		}
 	}
+}
+
+function ptApiService( dsApi, $rootScope ) {
+	return {
+		doLogin: doLogin,
+		checkPermissions: checkPermissions,
+		getExtraUserData: getExtraUserData,
+		resetPassword: resetPassword,
+		updateUserPicture: updateUserPicture
+	};
+
+	function doLogin( username, pw ) {
+		return dsApi.request( 'ValidarUsuario', [ username, pw ] ).then( function( data ) {
+			return data[ 0 ];
+		} );
+	}
+
+	function checkPermissions( resources ) {
+		return dsApi.request( 'ObtenerPermisos', [ $rootScope.userData.id_usuario, resources ] );
+	}
+
+	function getExtraUserData( username ) {
+		return dsApi.request( 'ObtenerDatosUsuario', [ username ] ).then( function( data ) {
+			return data[ 0 ];
+		} );
+	}
+
+	function resetPassword( username, oldPw, newPw ) {
+		return dsApi.request( 'CambiarPassword', [ username, oldPw, newPw ] );
+	}
+
+	function updateUserPicture( username, imgContent ) {
+		return dsApi.request( 'ActualizarFotoUsuario', [ username, imgContent ] );
+	}
+}
+
+function ptSessionService( $window, $rootScope, $state ) {
+	var STORAGE_KEYS = {
+			token: 'ptToken',
+			userData: 'ptUserData'
+		},
+		storage = $window.localStorage;
+
+	return {
+		start: start,
+		isUserAuthorized: isUserAuthorized,
+		setUserData: setUserData,
+		getUserData: getUserData,
+		getToken: getToken,
+		logout: logout
+	};
+
+	function start( userData ) {
+		setUserData( userData );
+		storage.setItem( STORAGE_KEYS.token, userData.token );
+	}
+
+	function isUserAuthorized() {
+		return getToken() !== null;
+	}
+
+	function setUserData( userData ) {
+		storage.setItem( STORAGE_KEYS.userData, angular.toJson( userData ) );
+		$rootScope.userData = userData;
+	}
+
+	function getUserData() {
+		var userData = storage.getItem( STORAGE_KEYS.userData );
+		if ( userData !== null )
+			return angular.fromJson( userData );
+		return null;
+	}
+
+	function getToken() {
+		return storage.getItem( STORAGE_KEYS.token );
+	}
+
+	function logout() {
+		storage.clear();
+		delete $rootScope.userData;
+		$state.go( 'login' );
+	}
+}
+
+function ptOpenProfileModal( $mdDialog, PT_TEMPLATES ) {
+	return function( tabIndex ) {
+		return $mdDialog.show( {
+			template: PT_TEMPLATES.modal,
+			controller: 'PtModalController',
+			locals: { modalTabIndex: tabIndex || 0 }
+		} );
+	};
 }
 } )();
 ( function() {

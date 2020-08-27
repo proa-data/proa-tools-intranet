@@ -3,7 +3,7 @@ angular
 	.module( 'proaTools.intranet' )
 	.run( runBlock );
 
-function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, getXhrResponseData ) {
+function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, getXhrResponseData, $rootScope, ptSessionService ) {
 	$translate.use( getLang() );
 
 	angular.merge( $locale, $extraLocale );
@@ -29,5 +29,34 @@ function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, ge
 	getXhrResponseData( 'about.json' ).then( function( data ) {
 		console.info( 'Package: "' + data.name + '" v' + data.version + '.' );
 	} );
+
+	$rootScope.$on( '$stateChangeSuccess', function( event, toState ) {
+		var stateName = toState.name,
+			translationId = stateName.split( '.' )[ 1 ],
+			breadcrumbList = [],
+			stateData = toState.data;
+
+		$rootScope.pageTitleTranslationId = getTranslationId( translationId, 'largeTitle' );
+
+		if ( translationId )
+			breadcrumbList.push( {
+				translationId: getTranslationId( translationId ),
+				sref: stateName
+			} );
+		if ( stateData ) {
+			var parentMenu = stateData.parentMenu;
+			if ( parentMenu )
+				breadcrumbList.unshift( {
+					translationId: getTranslationId( parentMenu )
+				} );
+		}
+		$rootScope.breadcrumbList = breadcrumbList;
+	} );
+
+	$rootScope.userData = ptSessionService.getUserData();
+
+	function getTranslationId( str, str2 ) {
+		return ( str ? str + '.' : '' ) + ( str2 || 'title' );
+	}
 }
 } )();

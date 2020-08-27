@@ -4,7 +4,10 @@ angular
 	.factory( 'getLang', getLang )
 	.factory( 'getXhrResponseData', getXhrResponseData )
 	.factory( 'dsApi', dsApi ) // DataSnap
-	.factory( 'springApi', springApi );
+	.factory( 'springApi', springApi )
+	.factory( 'ptApiService', ptApiService )
+	.factory( 'ptSessionService', ptSessionService )
+	.factory( 'ptOpenProfileModal', ptOpenProfileModal );
 
 function getLang( $locale ) {
 	return function() {
@@ -20,24 +23,18 @@ function getXhrResponseData( $http ) {
 	};
 }
 
-function dsApi( $http, $rootScope ) {
+function dsApi( $http, ptSessionService, $rootScope ) {
 	var errorAlert = angular.noop,
-		logout = angular.noop,
 		path = undefined;
 
 	return {
 		setErrorAlert: setErrorAlert,
-		setLogout: setLogout,
 		setPath: setPath,
 		request: getBuiltFn
 	};
 
 	function setErrorAlert( fn ) {
 		errorAlert = fn;
-	}
-
-	function setLogout( fn ) {
-		logout = fn;
 	}
 
 	function setPath( domain ) {
@@ -49,7 +46,7 @@ function dsApi( $http, $rootScope ) {
 	}
 
 	function getHttpPromise( subpath, params ) {
-		var headers = { 'User-Token': $rootScope.userToken },
+		var headers = { 'User-Token': ptSessionService.getToken() },
 			userData = $rootScope.userData;
 		if ( userData )
 			headers[ 'User-Company' ] = userData.id_empresa;
@@ -74,7 +71,7 @@ function dsApi( $http, $rootScope ) {
 				rde = responseData.error;
 			console.error( rde || responseData );
 			if ( response.status == 403 || ( rde && rde.includes( 'NOT_VALIDATED' ) ) )
-				logout();
+				ptSessionService.logout();
 			else
 				errorAlert();
 			throw responseData;
@@ -82,14 +79,12 @@ function dsApi( $http, $rootScope ) {
 	}
 }
 
-function springApi( $rootScope, uibPaginationConfig, $http ) {
+function springApi( ptSessionService, uibPaginationConfig, $http ) {
 	var errorAlert = angular.noop,
-		logout = angular.noop,
 		path = undefined;
 
 	return {
 		setErrorAlert: setErrorAlert,
-		setLogout: setLogout,
 		setPath: setPath,
 
 		// Requests
@@ -101,10 +96,6 @@ function springApi( $rootScope, uibPaginationConfig, $http ) {
 
 	function setErrorAlert( fn ) {
 		errorAlert = fn;
-	}
-
-	function setLogout( fn ) {
-		logout = fn;
 	}
 
 	function setPath( newPath ) {
@@ -121,7 +112,7 @@ function springApi( $rootScope, uibPaginationConfig, $http ) {
 		var config = {
 			method: method,
 			url: path + subpath,
-			headers: { 'Authorization': 'Bearer ' + $rootScope.userToken }
+			headers: { 'Authorization': 'Bearer ' + ptSessionService.getToken() }
 		};
 
 		params = params || {};
@@ -156,11 +147,103 @@ function springApi( $rootScope, uibPaginationConfig, $http ) {
 			if ( 'message' in responseData )
 				console.error( responseData.message );
 			if ( response.status == 401 )
-				logout();
+				ptSessionService.logout();
 			else
 				errorAlert();
 			throw responseData;
 		}
 	}
+}
+
+function ptApiService( dsApi, $rootScope ) {
+	return {
+		doLogin: doLogin,
+		checkPermissions: checkPermissions,
+		getExtraUserData: getExtraUserData,
+		resetPassword: resetPassword,
+		updateUserPicture: updateUserPicture
+	};
+
+	function doLogin( username, pw ) {
+		return dsApi.request( 'ValidarUsuario', [ username, pw ] ).then( function( data ) {
+			return data[ 0 ];
+		} );
+	}
+
+	function checkPermissions( resources ) {
+		return dsApi.request( 'ObtenerPermisos', [ $rootScope.userData.id_usuario, resources ] );
+	}
+
+	function getExtraUserData( username ) {
+		return dsApi.request( 'ObtenerDatosUsuario', [ username ] ).then( function( data ) {
+			return data[ 0 ];
+		} );
+	}
+
+	function resetPassword( username, oldPw, newPw ) {
+		return dsApi.request( 'CambiarPassword', [ username, oldPw, newPw ] );
+	}
+
+	function updateUserPicture( username, imgContent ) {
+		return dsApi.request( 'ActualizarFotoUsuario', [ username, imgContent ] );
+	}
+}
+
+function ptSessionService( $window, $rootScope, $state ) {
+	var STORAGE_KEYS = {
+			token: 'ptToken',
+			userData: 'ptUserData'
+		},
+		storage = $window.localStorage;
+
+	return {
+		start: start,
+		isUserAuthorized: isUserAuthorized,
+		setUserData: setUserData,
+		getUserData: getUserData,
+		getToken: getToken,
+		logout: logout
+	};
+
+	function start( userData ) {
+		setUserData( userData );
+		storage.setItem( STORAGE_KEYS.token, userData.token );
+	}
+
+	function isUserAuthorized() {
+		return getToken() !== null;
+	}
+
+	function setUserData( userData ) {
+		storage.setItem( STORAGE_KEYS.userData, angular.toJson( userData ) );
+		$rootScope.userData = userData;
+	}
+
+	function getUserData() {
+		var userData = storage.getItem( STORAGE_KEYS.userData );
+		if ( userData !== null )
+			return angular.fromJson( userData );
+		return null;
+	}
+
+	function getToken() {
+		return storage.getItem( STORAGE_KEYS.token );
+	}
+
+	function logout() {
+		storage.clear();
+		delete $rootScope.userData;
+		$state.go( 'login' );
+	}
+}
+
+function ptOpenProfileModal( $mdDialog, PT_TEMPLATES ) {
+	return function( tabIndex ) {
+		return $mdDialog.show( {
+			template: PT_TEMPLATES.modal,
+			controller: 'PtModalController',
+			locals: { modalTabIndex: tabIndex || 0 }
+		} );
+	};
 }
 } )();
