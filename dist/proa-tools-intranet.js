@@ -1,5 +1,5 @@
 /*!
- * Proa Tools Intranet v2.8.1 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v2.8.2 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
@@ -26,12 +26,10 @@ function config( $translateProvider ) {
 angular
 	.module( 'proaTools.intranet' )
 	.constant( 'PT_TEMPLATES', {
-		login: '<div class="container loginContent">' +
-				'<div class="banner">' +
-					'<img class="img-responsive center-block" src="img/logo.png">' +
-				'</div>' +
-				'<div class="loginForm">' +
-					'<div class="wellcome">' +
+		login: '<div class="container" id="container-login">' +
+				'<img class="img-responsive center-block" src="img/logo.png">' +
+				'<div>' +
+					'<div class="alert alert-info">' +
 						'<p translate="login.wellcome1"></p>' +
 						'<p translate="login.wellcome2"></p>' +
 					'</div>' +
