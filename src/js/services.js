@@ -159,25 +159,18 @@ function ptApiService( dsApi, $rootScope ) {
 	return {
 		doLogin: doLogin,
 		checkPermissions: checkPermissions,
-		getExtraUserData: getExtraUserData,
 		resetPassword: resetPassword,
 		updateUserPicture: updateUserPicture
 	};
 
 	function doLogin( username, pw ) {
-		return dsApi.request( 'ValidarUsuario', [ username, pw ] ).then( function( data ) {
+		return dsApi.request( 'ValidarUsuario', [ username, pw, '', '', 'web' ] ).then( function( data ) {
 			return data[ 0 ];
 		} );
 	}
 
 	function checkPermissions( resources ) {
 		return dsApi.request( 'ObtenerPermisos', [ $rootScope.userData.id_usuario, resources ] );
-	}
-
-	function getExtraUserData( username ) {
-		return dsApi.request( 'ObtenerDatosUsuario', [ username ] ).then( function( data ) {
-			return data[ 0 ];
-		} );
 	}
 
 	function resetPassword( username, oldPw, newPw ) {

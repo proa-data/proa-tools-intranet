@@ -1,5 +1,5 @@
 /*!
- * Proa Tools Intranet v2.8.0 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v2.8.1 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
@@ -88,14 +88,12 @@ angular
 						'<ul class="nav navbar-nav navbar-right">' +
 							'<li uib-dropdown>' +
 								'<a href="" uib-dropdown-toggle role="button">' +
-									'{{userData.id_usuario}}' +
-									' ' +
 									'<img class="img-responsive img-circle" ng-src="data:image/jpeg;base64,{{userData.contenido_foto}}" onerror="this.onerror=null;this.src=\'img/default-avatar.jpg\'">' +
 									' ' +
 									'<span class="caret"></span>' +
 								'</a>' +
 								'<ul class="dropdown-menu">' +
-									'<li class="dropdown-header">{{userData.nombre}}</li>' +
+									'<li class="dropdown-header">{{userData.nombre}} ({{userData.id_usuario}})</li>' +
 									'<li role="separator" class="divider"></li>' +
 									'<li><a href="" ng-click="openModal()"><span class="fas fa-user fa-fw"></span> <span translate="manageUser.title_dropdown"></span></a></li>' +
 									'<li><a href="" ng-click="logout()"><span class="fas fa-power-off fa-fw"></span> <span translate="manageUser.logout_dropdown"></span></a></li>' +
@@ -123,8 +121,8 @@ angular
 				'<a ui-sref="main.{{item.name}}" ng-include="\'nav-content.html\'"></a>' +
 				'</script>' +
 				'<script type="text/ng-template" id="nav-content.html">' +
-				'<span class="fa-fw" ng-class="item.iconClassName"></span>' +
-				' ' +
+				'<span class="fa-fw" ng-class="item.iconClassName" ng-if="item.iconClassName"></span>' +
+				'<span ng-if="item.iconClassName"> </span>' +
 				'<span translate="{{item.name}}.title"></span>' +
 				'</script>' +
 			'</header>' +
@@ -294,7 +292,7 @@ function PtLoginController( $scope, ptSessionService, ptApiService, $rootScope, 
 	}
 }
 
-function PtMainController( $scope, $rootScope, ptSessionService, ptApiService, ptScreens, ptOpenProfileModal ) {
+function PtMainController( $scope, $rootScope, ptSessionService, ptScreens, ptApiService, ptOpenProfileModal ) {
 	$scope.navList = [];
 
 	var displays = {};
@@ -311,12 +309,8 @@ function PtMainController( $scope, $rootScope, ptSessionService, ptApiService, p
 			logout();
 			return;
 		}
-		ptApiService.getExtraUserData( userData.id_usuario ).then( function( data ) {
-			userData.nif = data.nif;
-			userData.email = data.email;
-			if ( !( userData.nif && userData.email ) )
-				openModal();
-		} );
+		if ( !( userData.nif && userData.email ) )
+			openModal();
 
 		$scope.navList = ptScreens;
 
@@ -333,10 +327,11 @@ function PtMainController( $scope, $rootScope, ptSessionService, ptApiService, p
 				list.push( obj );
 		} );
 
-		var permissionsList = []
+		var permissionsList = {};
 		angular.forEach( list, function( obj ) {
-			permissionsList.push( obj.permission );
+			permissionsList[ obj.permission ] = 1;
 		} );
+		permissionsList = _.keys( permissionsList );
 		ptApiService.checkPermissions( permissionsList.join() ).then( function( data ) {
 			if ( data ) {
 				var permissions = data[ 0 ].permisos;
@@ -843,25 +838,18 @@ function ptApiService( dsApi, $rootScope ) {
 	return {
 		doLogin: doLogin,
 		checkPermissions: checkPermissions,
-		getExtraUserData: getExtraUserData,
 		resetPassword: resetPassword,
 		updateUserPicture: updateUserPicture
 	};
 
 	function doLogin( username, pw ) {
-		return dsApi.request( 'ValidarUsuario', [ username, pw ] ).then( function( data ) {
+		return dsApi.request( 'ValidarUsuario', [ username, pw, '', '', 'web' ] ).then( function( data ) {
 			return data[ 0 ];
 		} );
 	}
 
 	function checkPermissions( resources ) {
 		return dsApi.request( 'ObtenerPermisos', [ $rootScope.userData.id_usuario, resources ] );
-	}
-
-	function getExtraUserData( username ) {
-		return dsApi.request( 'ObtenerDatosUsuario', [ username ] ).then( function( data ) {
-			return data[ 0 ];
-		} );
 	}
 
 	function resetPassword( username, oldPw, newPw ) {

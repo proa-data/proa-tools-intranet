@@ -91,7 +91,7 @@ function PtLoginController( $scope, ptSessionService, ptApiService, $rootScope, 
 	}
 }
 
-function PtMainController( $scope, $rootScope, ptSessionService, ptApiService, ptScreens, ptOpenProfileModal ) {
+function PtMainController( $scope, $rootScope, ptSessionService, ptScreens, ptApiService, ptOpenProfileModal ) {
 	$scope.navList = [];
 
 	var displays = {};
@@ -108,12 +108,8 @@ function PtMainController( $scope, $rootScope, ptSessionService, ptApiService, p
 			logout();
 			return;
 		}
-		ptApiService.getExtraUserData( userData.id_usuario ).then( function( data ) {
-			userData.nif = data.nif;
-			userData.email = data.email;
-			if ( !( userData.nif && userData.email ) )
-				openModal();
-		} );
+		if ( !( userData.nif && userData.email ) )
+			openModal();
 
 		$scope.navList = ptScreens;
 
@@ -130,10 +126,11 @@ function PtMainController( $scope, $rootScope, ptSessionService, ptApiService, p
 				list.push( obj );
 		} );
 
-		var permissionsList = []
+		var permissionsList = {};
 		angular.forEach( list, function( obj ) {
-			permissionsList.push( obj.permission );
+			permissionsList[ obj.permission ] = 1;
 		} );
+		permissionsList = _.keys( permissionsList );
 		ptApiService.checkPermissions( permissionsList.join() ).then( function( data ) {
 			if ( data ) {
 				var permissions = data[ 0 ].permisos;

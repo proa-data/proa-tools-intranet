@@ -64,14 +64,12 @@ angular
 						'<ul class="nav navbar-nav navbar-right">' +
 							'<li uib-dropdown>' +
 								'<a href="" uib-dropdown-toggle role="button">' +
-									'{{userData.id_usuario}}' +
-									' ' +
 									'<img class="img-responsive img-circle" ng-src="data:image/jpeg;base64,{{userData.contenido_foto}}" onerror="this.onerror=null;this.src=\'img/default-avatar.jpg\'">' +
 									' ' +
 									'<span class="caret"></span>' +
 								'</a>' +
 								'<ul class="dropdown-menu">' +
-									'<li class="dropdown-header">{{userData.nombre}}</li>' +
+									'<li class="dropdown-header">{{userData.nombre}} ({{userData.id_usuario}})</li>' +
 									'<li role="separator" class="divider"></li>' +
 									'<li><a href="" ng-click="openModal()"><span class="fas fa-user fa-fw"></span> <span translate="manageUser.title_dropdown"></span></a></li>' +
 									'<li><a href="" ng-click="logout()"><span class="fas fa-power-off fa-fw"></span> <span translate="manageUser.logout_dropdown"></span></a></li>' +
@@ -99,8 +97,8 @@ angular
 				'<a ui-sref="main.{{item.name}}" ng-include="\'nav-content.html\'"></a>' +
 				'</script>' +
 				'<script type="text/ng-template" id="nav-content.html">' +
-				'<span class="fa-fw" ng-class="item.iconClassName"></span>' +
-				' ' +
+				'<span class="fa-fw" ng-class="item.iconClassName" ng-if="item.iconClassName"></span>' +
+				'<span ng-if="item.iconClassName"> </span>' +
 				'<span translate="{{item.name}}.title"></span>' +
 				'</script>' +
 			'</header>' +
