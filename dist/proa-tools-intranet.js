@@ -1,5 +1,5 @@
 /*!
- * Proa Tools Intranet v2.8.2 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v2.8.3 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
@@ -841,7 +841,7 @@ function ptApiService( dsApi, $rootScope ) {
 	};
 
 	function doLogin( username, pw ) {
-		return dsApi.request( 'ValidarUsuario', [ username, pw, '', '', 'web' ] ).then( function( data ) {
+		return dsApi.request( 'ValidarUsuario', [ username, pw, '', false, 'web' ] ).then( function( data ) {
 			return data[ 0 ];
 		} );
 	}

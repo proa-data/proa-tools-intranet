@@ -164,7 +164,7 @@ function ptApiService( dsApi, $rootScope ) {
 	};
 
 	function doLogin( username, pw ) {
-		return dsApi.request( 'ValidarUsuario', [ username, pw, '', '', 'web' ] ).then( function( data ) {
+		return dsApi.request( 'ValidarUsuario', [ username, pw, '', false, 'web' ] ).then( function( data ) {
 			return data[ 0 ];
 		} );
 	}
