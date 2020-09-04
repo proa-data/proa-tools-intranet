@@ -1,5 +1,5 @@
 /*!
- * Proa Tools Intranet v2.9.0 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v2.9.1 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
@@ -618,7 +618,7 @@ angular
 	.module( 'proaTools.intranet' )
 	.run( runBlock );
 
-function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, getXhrResponseData, $rootScope, ptSessionService ) {
+function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, $http, $rootScope, ptSessionService ) {
 	$translate.use( getLang() );
 
 	angular.merge( $locale, $extraLocale );
@@ -641,7 +641,8 @@ function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, ge
 		return m.isValid() ? m.toDate() : new Date( NaN );
 	};
 
-	getXhrResponseData( 'about.json' ).then( function( data ) {
+	$http.get( 'about.json' ).then( function( response ) {
+		var data = response.data;
 		console.info( 'Package: "' + data.name + '" v' + data.version + '.' );
 	} );
 
@@ -679,7 +680,6 @@ function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, ge
 angular
 	.module( 'proaTools.intranet' )
 	.factory( 'getLang', getLang )
-	.factory( 'getXhrResponseData', getXhrResponseData )
 	.factory( 'getStringDate', getStringDate )
 	.factory( 'dsApi', dsApi ) // DataSnap
 	.factory( 'springApi', springApi )
@@ -690,14 +690,6 @@ angular
 function getLang( $locale ) {
 	return function() {
 		return $locale.id.split( '-' ).shift();
-	};
-}
-
-function getXhrResponseData( $http ) {
-	return function( url ) {
-		return $http.get( url ).then( function( response ) {
-			return response.data;
-		} );
 	};
 }
 
