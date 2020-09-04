@@ -51,7 +51,9 @@
 
 // Basics of a navbar
 @navbar-height: (@line-height-computed * 3);
-@navbar-margin-bottom: 0;
+@navbar-margin-bottom: @line-height-computed;
+@navbar-content-height: (@line-height-computed * 2);
+@navbar-padding-vertical: ((@navbar-height - @navbar-content-height) / 2);
 
 @navbar-default-bg: @gray-lighter;
 
