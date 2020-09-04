@@ -3,6 +3,57 @@
 // --------------------------------------------------
 
 
+// Normalize form controls
+
 input[type="number"] {
 	.text-right();
+}
+
+
+// Flex forms
+
+.form-flex {
+	display: flex;
+	flex-wrap: wrap;
+	@length: @grid-gutter-width;
+	margin-right: floor((@length / -2));
+	margin-left: ceil((@length / -2));
+	> .form-group,
+	> .checkbox,
+	> fieldset,
+	> button {
+		flex: 0 0 auto;
+		width: auto;
+		max-width: 100%;
+		align-self: flex-start;
+	}
+	> .form-group,
+	> .checkbox {
+		padding-right: floor((@length / 2));
+		padding-left: ceil((@length / 2));
+	}
+	> .checkbox {
+		margin-top: 0;
+	}
+	> fieldset,
+	> button {
+		margin-right: floor((@length / 2));
+		margin-left: ceil((@length / 2));
+	}
+	> button {
+		margin-bottom: @form-group-margin-bottom;
+	}
+	> .form-group + button {
+		&,
+		& ~ button {
+			margin-top: (@line-height-computed + 5px);
+		}
+	}
+	> button ~ button {
+		margin-left: 0;
+	}
+	.rzslider {
+		display: block;
+		width: (@line-height-computed * 15);
+	}
 }

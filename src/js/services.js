@@ -3,6 +3,7 @@ angular
 	.module( 'proaTools.intranet' )
 	.factory( 'getLang', getLang )
 	.factory( 'getXhrResponseData', getXhrResponseData )
+	.factory( 'getStringDate', getStringDate )
 	.factory( 'dsApi', dsApi ) // DataSnap
 	.factory( 'springApi', springApi )
 	.factory( 'ptApiService', ptApiService )
@@ -20,6 +21,14 @@ function getXhrResponseData( $http ) {
 		return $http.get( url ).then( function( response ) {
 			return response.data;
 		} );
+	};
+}
+
+function getStringDate() {
+	return function( date ) {
+		if ( date instanceof Date )
+			return date.getFullYear() + '-' + ( date.getMonth() + 1 ) + '-' + date.getDate();
+		return '';
 	};
 }
 

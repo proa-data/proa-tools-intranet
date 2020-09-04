@@ -35,7 +35,7 @@ As external ones, there are:
 Besides, it is provided interesting utilities in AngularJS:
 
   - Package info (through web console).
-  - Services to get: language code and XHR response data.
+  - Services to get: language code, XHR response data and string date.
   - APIs: DataSnap and Spring.
   - Custom filters.
   - Automatic configuration of the translate system.
