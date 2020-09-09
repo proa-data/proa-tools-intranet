@@ -42,5 +42,6 @@ Besides, it is provided interesting utilities in AngularJS:
   - Autoconfig. of date input (`<md-datepicker>` directive).
   - Autoadjust of selected value(s) in Material selects (`<md-select>` directive) when array list changes.
   - Integrated system of login, header, main content and homepage.
+  - Loading spinner.
 
 And a customized design is applied (through Less), configuring Bootstrap and Font Awesome.

@@ -24,6 +24,19 @@ html {
 	}
 }
 
+#modal-backdrop-spinner {
+	z-index: @zindex-spinner;
+	md-progress-circular {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		.translate(-50%, -50%);
+		path {
+			stroke: @brand-primary;
+		}
+	}
+}
+
 #container-login {
 	display: flex;
 	flex-direction: column;
