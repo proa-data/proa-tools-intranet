@@ -1,5 +1,5 @@
 /*!
- * Proa Tools Intranet v2.12.0 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v2.13.0 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
@@ -612,7 +612,8 @@ function ptScreensProvider( $stateProvider, PT_TEMPLATES, $urlRouterProvider ) {
 				kcName = _.kebabCase( name ),
 				stateConfig = {
 					url: kcName,
-					templateUrl: 'app/' + kcName + '/view.html'
+					templateUrl: 'app/' + kcName + '/view.html',
+					resolve: obj.resolve
 				},
 				stateName = 'main.' + name,
 				param = obj.param;

@@ -54,7 +54,8 @@ function ptScreensProvider( $stateProvider, PT_TEMPLATES, $urlRouterProvider ) {
 				kcName = _.kebabCase( name ),
 				stateConfig = {
 					url: kcName,
-					templateUrl: 'app/' + kcName + '/view.html'
+					templateUrl: 'app/' + kcName + '/view.html',
+					resolve: obj.resolve
 				},
 				stateName = 'main.' + name,
 				param = obj.param;
