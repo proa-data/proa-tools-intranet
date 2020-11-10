@@ -32,9 +32,9 @@ input[type="number"] {
 .form-flex {
 	display: flex;
 	flex-wrap: wrap;
-	@length: @grid-gutter-width;
-	margin-right: floor((@length / -2));
-	margin-left: ceil((@length / -2));
+	@gutter: @grid-gutter-width;
+	margin-right: floor((@gutter / -2));
+	margin-left: ceil((@gutter / -2));
 	> .form-group,
 	> .checkbox,
 	> fieldset,
@@ -46,28 +46,28 @@ input[type="number"] {
 	}
 	> .form-group,
 	> .checkbox {
-		padding-right: floor((@length / 2));
-		padding-left: ceil((@length / 2));
+		padding-right: floor((@gutter / 2));
+		padding-left: ceil((@gutter / 2));
 	}
 	> .checkbox {
 		margin-top: 0;
 	}
 	> fieldset,
 	> button {
-		margin-right: floor((@length / 2));
-		margin-left: ceil((@length / 2));
+		margin-right: floor((@gutter / 2));
+		margin-left: ceil((@gutter / 2));
 	}
 	> button {
 		margin-bottom: @form-group-margin-bottom;
+		&:not(:last-child) {
+			margin-right: 0;
+		}
 	}
 	> .form-group + button {
 		&,
 		& ~ button {
 			margin-top: (@line-height-computed + 5px);
 		}
-	}
-	> button ~ button {
-		margin-left: 0;
 	}
 	.rzslider {
 		display: block;
