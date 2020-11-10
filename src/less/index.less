@@ -43,15 +43,13 @@ html {
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
-	img,
+	h1,
 	form {
 		margin-bottom: @line-height-computed;
 	}
 	img {
-		height: (@line-height-computed * 8.5);
-	}
-	.alert-info {
-		color: inherit;
-		background-color: @gray-lighter;
+		@width: (@line-height-computed * 8.5);
+		max-width: @width;
+		max-height: @width;
 	}
 }
