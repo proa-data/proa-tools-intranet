@@ -3,6 +3,23 @@
 // --------------------------------------------------
 
 
+// Normalize non-controls
+
+fieldset {
+	padding: 0 @padding-base-horizontal @padding-base-horizontal;
+	border: 1px solid @legend-border-color;
+	margin-bottom: @form-group-margin-bottom;
+}
+
+legend {
+	font-size: inherit;
+	font-weight: 700;
+	width: auto;
+	border-bottom: 0;
+	margin-bottom: 5px;
+}
+
+
 // Normalize form controls
 
 input[type="number"] {
