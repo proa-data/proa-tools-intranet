@@ -40,4 +40,28 @@ function mdSelect( $timeout ) {
 		};
 	}
 }
+
+angular
+	.module( 'proaTools.intranet' )
+	.directive( 'ptSpinner', ptSpinner );
+
+function ptSpinner( $http ) {
+	return {
+		restrict: 'E',
+		template: '<div class="modal-backdrop fade in" id="modal-backdrop-spinner" ng-show="isLoading()">' +
+				'<md-progress-circular md-mode="indeterminate"></md-progress-circular>' +
+			'</div>',
+		replace: true,
+		scope: true,
+		link: link
+	};
+
+	function link( scope ) {
+		scope.isLoading = isLoading;
+
+		function isLoading() {
+			return $http.pendingRequests.length;
+		}
+	}
+}
 } )();

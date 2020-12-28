@@ -3,7 +3,7 @@ angular
 	.module( 'proaTools.intranet' )
 	.run( runBlock );
 
-function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, getXhrResponseData, $rootScope, ptSessionService ) {
+function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, $http, $rootScope, ptSessionService, dateFilter ) {
 	$translate.use( getLang() );
 
 	angular.merge( $locale, $extraLocale );
@@ -26,7 +26,8 @@ function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, ge
 		return m.isValid() ? m.toDate() : new Date( NaN );
 	};
 
-	getXhrResponseData( 'about.json' ).then( function( data ) {
+	$http.get( 'about.json' ).then( function( response ) {
+		var data = response.data;
 		console.info( 'Package: "' + data.name + '" v' + data.version + '.' );
 	} );
 
@@ -54,6 +55,13 @@ function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, ge
 	} );
 
 	$rootScope.userData = ptSessionService.getUserData();
+
+	Date.prototype.toJSON = function() {
+		var date = dateFilter( this, 'yyyy-M-d H:m:s' );
+		if ( angular.isDate( date ) ) // Invalid date
+			return null;
+		return date;
+	};
 
 	function getTranslationId( str, str2 ) {
 		return ( str ? str + '.' : '' ) + ( str2 || 'title' );

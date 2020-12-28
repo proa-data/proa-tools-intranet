@@ -1,5 +1,5 @@
 /*!
- * Proa Tools Intranet v2.8.0 (https://github.com/proa-data/proa-tools-intranet)
+ * Proa Tools Intranet v2.15.1 (https://github.com/proa-data/proa-tools-intranet)
  */
 
 ( function() {
@@ -26,42 +26,34 @@ function config( $translateProvider ) {
 angular
 	.module( 'proaTools.intranet' )
 	.constant( 'PT_TEMPLATES', {
-		login: '<div class="container loginContent">' +
-				'<div class="banner">' +
+		login: '<div class="container" id="container-login">' +
+				'<div>' +
 					'<img class="img-responsive center-block" src="img/logo.png">' +
-				'</div>' +
-				'<div class="loginForm">' +
-					'<div class="wellcome">' +
-						'<p translate="login.wellcome1"></p>' +
-						'<p translate="login.wellcome2"></p>' +
-					'</div>' +
-					'<form class="form-horizontal m-bottom" name="loginForm" novalidate ng-submit="submit(loginForm)">' +
-						'<div class="form-group" ng-class="{\'has-error\': submitted&&loginForm.user.$error.required}">' +
-							'<label class="col-sm-2 control-label"><span class="fas fa-user fa-lg"></span></label>' +
-							'<div class="col-sm-10">' +
-								'<input type="text" class="form-control" placeholder="{{\'login.name\' | translate}}" name="user" ng-model="loginData.user" required>' +
+					'<h1 class="h3 text-center" translate="largeTitle"></h1>' +
+					'<form class="form-horizontal" ng-submit="submit()">' +
+						'<div class="form-group">' +
+							'<label class="col-sm-4 control-label" translate="login.user"></label>' +
+							'<div class="col-sm-8">' +
+								'<input type="text" class="form-control" ng-model="loginData.user" required>' +
 							'</div>' +
 						'</div>' +
-						'<div class="form-group" ng-class="{\'has-error\': submitted&&loginForm.pass.$error.required}">' +
-							'<label class="col-sm-2 control-label"><span class="fas fa-lock fa-lg"></span></label>' +
-							'<div class="col-sm-10">' +
-								'<input type="password" class="form-control" placeholder="{{\'login.password\' | translate}}" name="pass" ng-model="loginData.pass" required>' +
+						'<div class="form-group">' +
+							'<label class="col-sm-4 control-label" translate="login.password"></label>' +
+							'<div class="col-sm-8">' +
+								'<input type="password" class="form-control" ng-model="loginData.pw" required>' +
 							'</div>' +
 						'</div>' +
 						'<div class="form-group" ng-if="selectCompany">' +
-							'<label class="col-sm-2 control-label"><span class="fas fa-users fa-lg"></span></label>' +
-							'<div class="col-sm-10">' +
-								'<select class="form-control" name="company" ng-model="userData.id_empresa" ng-options="item.id as item.name for item in companyItems" ng-change="submitWithCompany()"></select>' +
+							'<label class="col-sm-4 control-label" translate="login.company"></label>' +
+							'<div class="col-sm-8">' +
+								'<select class="form-control" ng-model="$root.userData.id_empresa" ng-options="item.id as item.name for item in companyItems" ng-change="submitWithCompany()"></select>' +
 							'</div>' +
 						'</div>' +
-						'<button type="submit" class="btn btn-primary btn-block" ng-disabled="!isready" translate="login.login"></button>' +
+						'<button type="submit" class="btn btn-primary btn-block" translate="login.login"></button>' +
 					'</form>' +
-					'<p class="alert alert-danger" ng-show="submitted&&loginForm.company.$error.required"><span translate="login.error.company1"><strong translate="login.error.company"></strong>.</p>' +
-					'<p class="alert alert-danger" ng-show="submitted&&loginForm.user.$error.required"><span translate="error.initMas"></span><strong translate="login.error.name"></strong>.</p>' +
-					'<p class="alert alert-danger" ng-show="submitted&&loginForm.pass.$error.required"><span translate="error.initFem"></span> <strong translate="login.error.password></strong>.</p>' +
-					'<p class="alert alert-danger" ng-show="submitted&&notPermiss"><span translate="login.error.initNoLogin"></span><strong translate="login.error.noLogin"></strong>.</p>' +
-					'<p class="alert alert-danger" ng-show="requiredUpdatePassword"><span translate="login.error.update_password_required"></span>.</p>' +
-					'<p class="alert alert-danger" ng-show="submitted&&errorServer"><span translate="login.error.server1"></span><strong translate="login.error.server2"></strong>.</p>' +
+					'<p class="alert alert-danger" ng-show="notPermiss" translate="login.error.noLogin"></p>' +
+					'<p class="alert alert-danger" ng-show="requiredUpdatePassword" translate="login.error.update_password_required"></p>' +
+					'<p class="alert alert-danger" ng-show="errorServer" translate="login.error.server"></p>' +
 				'</div>' +
 			'</div>',
 		main: '<header>' +
@@ -73,13 +65,13 @@ angular
 								'<span class="icon-bar"></span>' +
 								'<span class="icon-bar"></span>' +
 							'</button>' +
-							'<div class="navbar-brand" ng-if="userData.logo_contenido">' +
-								'<img ng-src="data:image/png;base64,{{userData.logo_contenido}}">' +
+							'<div class="navbar-brand" ng-if="$root.userData.logo_contenido">' +
+								'<img ng-src="data:image/png;base64,{{$root.userData.logo_contenido}}">' +
 							'</div>' +
 						'</div>' +
 						'<div class="navbar-text">' +
 							'<ol class="breadcrumb">' +
-								'<li ng-repeat="item in breadcrumbList" ng-class="{active: item.sref}">' +
+								'<li ng-repeat="item in $root.breadcrumbList" ng-class="{active: item.sref}">' +
 									'<a ui-sref="{{item.sref}}" translate="{{item.translationId}}" ng-if="item.sref"></a>' +
 									'<span translate="{{item.translationId}}" ng-if="!item.sref"></span>' +
 								'</li>' +
@@ -88,14 +80,12 @@ angular
 						'<ul class="nav navbar-nav navbar-right">' +
 							'<li uib-dropdown>' +
 								'<a href="" uib-dropdown-toggle role="button">' +
-									'{{userData.id_usuario}}' +
-									' ' +
-									'<img class="img-responsive img-circle" ng-src="data:image/jpeg;base64,{{userData.contenido_foto}}" onerror="this.onerror=null;this.src=\'img/default-avatar.jpg\'">' +
+									'<img class="img-responsive img-circle" ng-src="data:image/jpeg;base64,{{$root.userData.contenido_foto}}" onerror="this.onerror=null;this.src=\'img/default-avatar.jpg\'">' +
 									' ' +
 									'<span class="caret"></span>' +
 								'</a>' +
 								'<ul class="dropdown-menu">' +
-									'<li class="dropdown-header">{{userData.nombre}}</li>' +
+									'<li class="dropdown-header">{{$root.userData.nombre}} ({{$root.userData.id_usuario}})</li>' +
 									'<li role="separator" class="divider"></li>' +
 									'<li><a href="" ng-click="openModal()"><span class="fas fa-user fa-fw"></span> <span translate="manageUser.title_dropdown"></span></a></li>' +
 									'<li><a href="" ng-click="logout()"><span class="fas fa-power-off fa-fw"></span> <span translate="manageUser.logout_dropdown"></span></a></li>' +
@@ -123,8 +113,8 @@ angular
 				'<a ui-sref="main.{{item.name}}" ng-include="\'nav-content.html\'"></a>' +
 				'</script>' +
 				'<script type="text/ng-template" id="nav-content.html">' +
-				'<span class="fa-fw" ng-class="item.iconClassName"></span>' +
-				' ' +
+				'<span class="fa-fw" ng-class="item.iconClassName" ng-if="item.iconClassName"></span>' +
+				'<span ng-if="item.iconClassName"> </span>' +
 				'<span translate="{{item.name}}.title"></span>' +
 				'</script>' +
 			'</header>' +
@@ -144,7 +134,7 @@ angular
 							'<md-tab-body>' +
 								'<div class="tab-body">' +
 									'<form ng-submit="saveData()">' +
-										'<p class="alert alert-danger" translate="error.noUserData" ng-show="isNoUserData()"></p>' +
+										'<p class="alert alert-danger" translate="manageUser.noUserData" ng-show="isNoUserData()"></p>' +
 										'<div class="form-group">' +
 											'<label translate="manageUser.nif"></label>' +
 											'<input type="text" class="form-control" ng-model="data.nif" required>' +
@@ -189,7 +179,7 @@ angular
 							'<md-tab-label><span translate="manageUser.updatePicture"></span></md-tab-label>' +
 							'<md-tab-body>' +
 								'<div class="tab-body text-center">' +
-									'<img id="profileImage" ng-src="data:image/jpeg;base64,{{photoContent}}" class="img-responsive img-circle center-block m-bottom" alt="Profile picture" onerror="this.onerror = null;this.src=\'img/default-avatar.jpg\'" width="150">' +
+									'<img id="profileImage" ng-src="data:image/jpeg;base64,{{photoContent}}" class="img-responsive img-circle center-block" alt="Profile picture" onerror="this.onerror = null;this.src=\'img/default-avatar.jpg\'" width="150">' +
 									'<input type="file" id="input-new-image" accept="image/*;capture=camera" onchange="angular.element(this).scope().processNewImage(this)" image="" resize-max-height="1000" resize-max-width="1000" resize-quality="0.7" resize-type="image/jpg" accept=".jpg,.jpeg,.png" class="hidden">' +
 									'<button type="button" class="btn btn-primary" ng-click="getNewImage()"><span class="fas fa-camera fa-2x"></span></button>' +
 								'</div>' +
@@ -211,8 +201,6 @@ angular
 function PtLoginController( $scope, ptSessionService, ptApiService, $rootScope, ptOpenProfileModal, dataService, $state ) {
 	$scope.loginData = {};
 	$scope.selectCompany = false;
-	$scope.isready = true;
-	$scope.submitted = false;
 	$scope.submit = submit;
 	$scope.submitWithCompany = submitWithCompany;
 
@@ -222,18 +210,14 @@ function PtLoginController( $scope, ptSessionService, ptApiService, $rootScope, 
 		ptSessionService.logout();
 	}
 
-	function submit( loginForm ) {
-		if ( loginForm.$invalid ) {
-			$scope.submitted = true;
-			return;
-		}
-		ptApiService.doLogin( $scope.loginData.user, md5( $scope.loginData.pass ) ).then( function( data ) {
+	function submit() {
+		ptApiService.doLogin( $scope.loginData.user, md5( $scope.loginData.pw ) ).then( function( data ) {
 			if ( data ) {
 				ptSessionService.start( data );
 				var userData = $rootScope.userData;
 				if ( userData && userData.validado ) {
 					$scope.requiredUpdatePassword = false;
-					if ( $scope.loginData.user == $scope.loginData.pass ) {
+					if ( $scope.loginData.user == $scope.loginData.pw ) {
 						ptOpenProfileModal( 1 ).then( function( answer ) {
 							if ( answer )
 								getCompanies();
@@ -247,14 +231,12 @@ function PtLoginController( $scope, ptSessionService, ptApiService, $rootScope, 
 						$scope.errorServer = true;
 					else
 						$scope.notPermiss = true;
-					$scope.submitted = true;
 				}
 			} else {
 				if ( data === undefined )
 					$scope.errorServer = true;
 				else
 					$scope.notPermiss = true;
-				$scope.submitted = true;
 			}
 		} );
 	}
@@ -267,12 +249,10 @@ function PtLoginController( $scope, ptSessionService, ptApiService, $rootScope, 
 			} );
 			ptSessionService.start( $rootScope.userData );
 			goToHome();
-		} else
-			$scope.submitted = true;
+		}
 	}
 
 	function getCompanies() {
-		$scope.isready = false;
 		dataService.getCompanies().then( function( data ) {
 			if ( data ) {
 				$scope.companyItems = data;
@@ -285,7 +265,6 @@ function PtLoginController( $scope, ptSessionService, ptApiService, $rootScope, 
 					$scope.selectCompany = true;
 			} else
 				$scope.errorServer = true;
-			$scope.isready = !$scope.isready;
 		} );
 	}
 
@@ -294,7 +273,7 @@ function PtLoginController( $scope, ptSessionService, ptApiService, $rootScope, 
 	}
 }
 
-function PtMainController( $scope, $rootScope, ptSessionService, ptApiService, ptScreens, ptOpenProfileModal ) {
+function PtMainController( $scope, $rootScope, ptSessionService, ptScreens, ptApiService, ptOpenProfileModal ) {
 	$scope.navList = [];
 
 	var displays = {};
@@ -311,12 +290,8 @@ function PtMainController( $scope, $rootScope, ptSessionService, ptApiService, p
 			logout();
 			return;
 		}
-		ptApiService.getExtraUserData( userData.id_usuario ).then( function( data ) {
-			userData.nif = data.nif;
-			userData.email = data.email;
-			if ( !( userData.nif && userData.email ) )
-				openModal();
-		} );
+		if ( !( userData.nif && userData.email ) )
+			openModal();
 
 		$scope.navList = ptScreens;
 
@@ -333,10 +308,11 @@ function PtMainController( $scope, $rootScope, ptSessionService, ptApiService, p
 				list.push( obj );
 		} );
 
-		var permissionsList = []
+		var permissionsList = {};
 		angular.forEach( list, function( obj ) {
-			permissionsList.push( obj.permission );
+			permissionsList[ obj.permission ] = 1;
 		} );
+		permissionsList = _.keys( permissionsList );
 		ptApiService.checkPermissions( permissionsList.join() ).then( function( data ) {
 			if ( data ) {
 				var permissions = data[ 0 ].permisos;
@@ -512,6 +488,30 @@ function mdSelect( $timeout ) {
 		};
 	}
 }
+
+angular
+	.module( 'proaTools.intranet' )
+	.directive( 'ptSpinner', ptSpinner );
+
+function ptSpinner( $http ) {
+	return {
+		restrict: 'E',
+		template: '<div class="modal-backdrop fade in" id="modal-backdrop-spinner" ng-show="isLoading()">' +
+				'<md-progress-circular md-mode="indeterminate"></md-progress-circular>' +
+			'</div>',
+		replace: true,
+		scope: true,
+		link: link
+	};
+
+	function link( scope ) {
+		scope.isLoading = isLoading;
+
+		function isLoading() {
+			return $http.pendingRequests.length;
+		}
+	}
+}
 } )();
 ( function() {
 angular
@@ -595,7 +595,8 @@ function ptScreensProvider( $stateProvider, PT_TEMPLATES, $urlRouterProvider ) {
 				kcName = _.kebabCase( name ),
 				stateConfig = {
 					url: kcName,
-					templateUrl: 'app/' + kcName + '/view.html'
+					templateUrl: 'app/' + kcName + '/view.html',
+					resolve: obj.resolve
 				},
 				stateName = 'main.' + name,
 				param = obj.param;
@@ -625,7 +626,7 @@ angular
 	.module( 'proaTools.intranet' )
 	.run( runBlock );
 
-function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, getXhrResponseData, $rootScope, ptSessionService ) {
+function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, $http, $rootScope, ptSessionService, dateFilter ) {
 	$translate.use( getLang() );
 
 	angular.merge( $locale, $extraLocale );
@@ -648,7 +649,8 @@ function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, ge
 		return m.isValid() ? m.toDate() : new Date( NaN );
 	};
 
-	getXhrResponseData( 'about.json' ).then( function( data ) {
+	$http.get( 'about.json' ).then( function( response ) {
+		var data = response.data;
 		console.info( 'Package: "' + data.name + '" v' + data.version + '.' );
 	} );
 
@@ -677,6 +679,13 @@ function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, ge
 
 	$rootScope.userData = ptSessionService.getUserData();
 
+	Date.prototype.toJSON = function() {
+		var date = dateFilter( this, 'yyyy-M-d H:m:s' );
+		if ( angular.isDate( date ) ) // Invalid date
+			return null;
+		return date;
+	};
+
 	function getTranslationId( str, str2 ) {
 		return ( str ? str + '.' : '' ) + ( str2 || 'title' );
 	}
@@ -686,7 +695,7 @@ function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, ge
 angular
 	.module( 'proaTools.intranet' )
 	.factory( 'getLang', getLang )
-	.factory( 'getXhrResponseData', getXhrResponseData )
+	.factory( 'getStringDate', getStringDate )
 	.factory( 'dsApi', dsApi ) // DataSnap
 	.factory( 'springApi', springApi )
 	.factory( 'ptApiService', ptApiService )
@@ -699,11 +708,11 @@ function getLang( $locale ) {
 	};
 }
 
-function getXhrResponseData( $http ) {
-	return function( url ) {
-		return $http.get( url ).then( function( response ) {
-			return response.data;
-		} );
+function getStringDate() {
+	return function( date ) {
+		if ( date instanceof Date )
+			return date.getFullYear() + '-' + ( date.getMonth() + 1 ) + '-' + date.getDate();
+		return '';
 	};
 }
 
@@ -843,25 +852,18 @@ function ptApiService( dsApi, $rootScope ) {
 	return {
 		doLogin: doLogin,
 		checkPermissions: checkPermissions,
-		getExtraUserData: getExtraUserData,
 		resetPassword: resetPassword,
 		updateUserPicture: updateUserPicture
 	};
 
 	function doLogin( username, pw ) {
-		return dsApi.request( 'ValidarUsuario', [ username, pw ] ).then( function( data ) {
+		return dsApi.request( 'ValidarUsuario', [ username, pw, '', false, 'web' ] ).then( function( data ) {
 			return data[ 0 ];
 		} );
 	}
 
 	function checkPermissions( resources ) {
 		return dsApi.request( 'ObtenerPermisos', [ $rootScope.userData.id_usuario, resources ] );
-	}
-
-	function getExtraUserData( username ) {
-		return dsApi.request( 'ObtenerDatosUsuario', [ username ] ).then( function( data ) {
-			return data[ 0 ];
-		} );
 	}
 
 	function resetPassword( username, oldPw, newPw ) {

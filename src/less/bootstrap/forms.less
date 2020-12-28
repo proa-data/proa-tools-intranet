@@ -3,6 +3,74 @@
 // --------------------------------------------------
 
 
+// Normalize non-controls
+
+fieldset {
+	padding: 0 @padding-base-horizontal @padding-base-horizontal;
+	border: 1px solid @legend-border-color;
+	margin-bottom: @form-group-margin-bottom;
+}
+
+legend {
+	font-size: inherit;
+	font-weight: 700;
+	width: auto;
+	border-bottom: 0;
+	margin-bottom: 5px;
+}
+
+
+// Normalize form controls
+
 input[type="number"] {
 	.text-right();
+}
+
+
+// Flex forms
+
+.form-flex {
+	display: flex;
+	flex-wrap: wrap;
+	@gutter: @grid-gutter-width;
+	margin-right: floor((@gutter / -2));
+	margin-left: ceil((@gutter / -2));
+	> .form-group,
+	> .checkbox,
+	> fieldset,
+	> button {
+		flex: 0 0 auto;
+		width: auto;
+		max-width: 100%;
+		align-self: flex-start;
+	}
+	> .form-group,
+	> .checkbox {
+		padding-right: floor((@gutter / 2));
+		padding-left: ceil((@gutter / 2));
+	}
+	> .checkbox {
+		margin-top: 0;
+	}
+	> fieldset,
+	> button {
+		margin-right: floor((@gutter / 2));
+		margin-left: ceil((@gutter / 2));
+	}
+	> button {
+		margin-bottom: @form-group-margin-bottom;
+		&:not(:last-child) {
+			margin-right: 0;
+		}
+	}
+	> .form-group + button {
+		&,
+		& ~ button {
+			margin-top: (@line-height-computed + 5px);
+		}
+	}
+	.rzslider {
+		display: block;
+		width: (@line-height-computed * 15);
+	}
 }

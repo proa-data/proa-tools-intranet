@@ -2,7 +2,7 @@
 angular
 	.module( 'proaTools.intranet' )
 	.factory( 'getLang', getLang )
-	.factory( 'getXhrResponseData', getXhrResponseData )
+	.factory( 'getStringDate', getStringDate )
 	.factory( 'dsApi', dsApi ) // DataSnap
 	.factory( 'springApi', springApi )
 	.factory( 'ptApiService', ptApiService )
@@ -15,11 +15,11 @@ function getLang( $locale ) {
 	};
 }
 
-function getXhrResponseData( $http ) {
-	return function( url ) {
-		return $http.get( url ).then( function( response ) {
-			return response.data;
-		} );
+function getStringDate() {
+	return function( date ) {
+		if ( date instanceof Date )
+			return date.getFullYear() + '-' + ( date.getMonth() + 1 ) + '-' + date.getDate();
+		return '';
 	};
 }
 
@@ -159,25 +159,18 @@ function ptApiService( dsApi, $rootScope ) {
 	return {
 		doLogin: doLogin,
 		checkPermissions: checkPermissions,
-		getExtraUserData: getExtraUserData,
 		resetPassword: resetPassword,
 		updateUserPicture: updateUserPicture
 	};
 
 	function doLogin( username, pw ) {
-		return dsApi.request( 'ValidarUsuario', [ username, pw ] ).then( function( data ) {
+		return dsApi.request( 'ValidarUsuario', [ username, pw, '', false, 'web' ] ).then( function( data ) {
 			return data[ 0 ];
 		} );
 	}
 
 	function checkPermissions( resources ) {
 		return dsApi.request( 'ObtenerPermisos', [ $rootScope.userData.id_usuario, resources ] );
-	}
-
-	function getExtraUserData( username ) {
-		return dsApi.request( 'ObtenerDatosUsuario', [ username ] ).then( function( data ) {
-			return data[ 0 ];
-		} );
 	}
 
 	function resetPassword( username, oldPw, newPw ) {

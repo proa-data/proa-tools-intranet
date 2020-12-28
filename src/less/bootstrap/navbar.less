@@ -1,0 +1,64 @@
+//
+// Navbars
+// --------------------------------------------------
+
+
+// Wrapper and base class
+
+.navbar .img-responsive {
+	display: inline-block;
+	height: @navbar-content-height;
+	width: @navbar-content-height;
+}
+
+
+// Navbar collapse (body)
+
+.navbar-collapse {
+	clear: both;
+	padding-left: 0;
+	padding-right: 0;
+	&.collapse {
+		display: none !important;
+		&.in {
+			display: block !important;
+		}
+	}
+	.navbar-nav {
+		&,
+		& > li {
+			float: none;
+		}
+	}
+}
+
+
+// Brand/project name
+
+.navbar-brand img {
+	max-height: 100%;
+}
+
+
+// Navbar toggle
+
+.navbar-toggle {
+	float: left;
+	display: block;
+}
+
+
+// Navbar nav links
+
+.navbar-nav .navbar-nav {
+	padding-left: (@navbar-padding-horizontal * 2);
+}
+
+
+// Text in navbars
+
+.navbar-text .breadcrumb {
+	background-color: transparent;
+	padding: 0;
+	margin-bottom: 0;
+}

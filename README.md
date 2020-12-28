@@ -35,12 +35,13 @@ As external ones, there are:
 Besides, it is provided interesting utilities in AngularJS:
 
   - Package info (through web console).
-  - Services to get: language code and XHR response data.
+  - Services to get: language code and string date.
   - APIs: DataSnap and Spring.
   - Custom filters.
   - Automatic configuration of the translate system.
   - Autoconfig. of date input (`<md-datepicker>` directive).
   - Autoadjust of selected value(s) in Material selects (`<md-select>` directive) when array list changes.
   - Integrated system of login, header, main content and homepage.
+  - Loading spinner.
 
 And a customized design is applied (through Less), configuring Bootstrap and Font Awesome.

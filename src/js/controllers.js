@@ -8,8 +8,6 @@ angular
 function PtLoginController( $scope, ptSessionService, ptApiService, $rootScope, ptOpenProfileModal, dataService, $state ) {
 	$scope.loginData = {};
 	$scope.selectCompany = false;
-	$scope.isready = true;
-	$scope.submitted = false;
 	$scope.submit = submit;
 	$scope.submitWithCompany = submitWithCompany;
 
@@ -19,18 +17,14 @@ function PtLoginController( $scope, ptSessionService, ptApiService, $rootScope, 
 		ptSessionService.logout();
 	}
 
-	function submit( loginForm ) {
-		if ( loginForm.$invalid ) {
-			$scope.submitted = true;
-			return;
-		}
-		ptApiService.doLogin( $scope.loginData.user, md5( $scope.loginData.pass ) ).then( function( data ) {
+	function submit() {
+		ptApiService.doLogin( $scope.loginData.user, md5( $scope.loginData.pw ) ).then( function( data ) {
 			if ( data ) {
 				ptSessionService.start( data );
 				var userData = $rootScope.userData;
 				if ( userData && userData.validado ) {
 					$scope.requiredUpdatePassword = false;
-					if ( $scope.loginData.user == $scope.loginData.pass ) {
+					if ( $scope.loginData.user == $scope.loginData.pw ) {
 						ptOpenProfileModal( 1 ).then( function( answer ) {
 							if ( answer )
 								getCompanies();
@@ -44,14 +38,12 @@ function PtLoginController( $scope, ptSessionService, ptApiService, $rootScope, 
 						$scope.errorServer = true;
 					else
 						$scope.notPermiss = true;
-					$scope.submitted = true;
 				}
 			} else {
 				if ( data === undefined )
 					$scope.errorServer = true;
 				else
 					$scope.notPermiss = true;
-				$scope.submitted = true;
 			}
 		} );
 	}
@@ -64,12 +56,10 @@ function PtLoginController( $scope, ptSessionService, ptApiService, $rootScope, 
 			} );
 			ptSessionService.start( $rootScope.userData );
 			goToHome();
-		} else
-			$scope.submitted = true;
+		}
 	}
 
 	function getCompanies() {
-		$scope.isready = false;
 		dataService.getCompanies().then( function( data ) {
 			if ( data ) {
 				$scope.companyItems = data;
@@ -82,7 +72,6 @@ function PtLoginController( $scope, ptSessionService, ptApiService, $rootScope, 
 					$scope.selectCompany = true;
 			} else
 				$scope.errorServer = true;
-			$scope.isready = !$scope.isready;
 		} );
 	}
 
@@ -91,7 +80,7 @@ function PtLoginController( $scope, ptSessionService, ptApiService, $rootScope, 
 	}
 }
 
-function PtMainController( $scope, $rootScope, ptSessionService, ptApiService, ptScreens, ptOpenProfileModal ) {
+function PtMainController( $scope, $rootScope, ptSessionService, ptScreens, ptApiService, ptOpenProfileModal ) {
 	$scope.navList = [];
 
 	var displays = {};
@@ -108,12 +97,8 @@ function PtMainController( $scope, $rootScope, ptSessionService, ptApiService, p
 			logout();
 			return;
 		}
-		ptApiService.getExtraUserData( userData.id_usuario ).then( function( data ) {
-			userData.nif = data.nif;
-			userData.email = data.email;
-			if ( !( userData.nif && userData.email ) )
-				openModal();
-		} );
+		if ( !( userData.nif && userData.email ) )
+			openModal();
 
 		$scope.navList = ptScreens;
 
@@ -130,10 +115,11 @@ function PtMainController( $scope, $rootScope, ptSessionService, ptApiService, p
 				list.push( obj );
 		} );
 
-		var permissionsList = []
+		var permissionsList = {};
 		angular.forEach( list, function( obj ) {
-			permissionsList.push( obj.permission );
+			permissionsList[ obj.permission ] = 1;
 		} );
+		permissionsList = _.keys( permissionsList );
 		ptApiService.checkPermissions( permissionsList.join() ).then( function( data ) {
 			if ( data ) {
 				var permissions = data[ 0 ].permisos;
