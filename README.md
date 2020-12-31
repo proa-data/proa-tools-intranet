@@ -4,7 +4,7 @@ Utilities and dependencies for internal webs of Proa Data.
 
 ## Installation
 
-```powershell
+```bash
 bower install proa-tools-intranet
 ```
 
