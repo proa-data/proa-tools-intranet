@@ -24,6 +24,15 @@ html {
 	}
 }
 
+.table-sticky .table {
+	> thead,
+	> tfoot {
+		> tr > th {
+			background-color: @table-bg-header;
+		}
+	}
+}
+
 #modal-backdrop-spinner {
 	z-index: @zindex-spinner;
 	md-progress-circular {
