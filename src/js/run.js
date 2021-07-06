@@ -32,26 +32,9 @@ function runBlock( $translate, getLang, $locale, $extraLocale, $mdDateLocale, $h
 	} );
 
 	$rootScope.$on( '$stateChangeSuccess', function( event, toState ) {
-		var stateName = toState.name,
-			translationId = stateName.split( '.' )[ 1 ],
-			breadcrumbList = [],
-			stateData = toState.data;
-
-		$rootScope.pageTitleTranslationId = getTranslationId( translationId, 'largeTitle' );
-
-		if ( translationId )
-			breadcrumbList.push( {
-				translationId: getTranslationId( translationId ),
-				sref: stateName
-			} );
-		if ( stateData ) {
-			var parentMenu = stateData.parentMenu;
-			if ( parentMenu )
-				breadcrumbList.unshift( {
-					translationId: getTranslationId( parentMenu )
-				} );
-		}
-		$rootScope.breadcrumbList = breadcrumbList;
+		var translationId = toState.name.split( '.' )[ 1 ];
+		$rootScope.pageTitleTranslationId = getTranslationId( translationId );
+		$rootScope.pageLargeTitleTranslationId = getTranslationId( translationId, 'largeTitle' );
 	} );
 
 	$rootScope.userData = ptSessionService.getUserData();

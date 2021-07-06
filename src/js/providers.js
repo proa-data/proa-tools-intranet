@@ -33,9 +33,8 @@ function ptScreensProvider( $stateProvider, PT_TEMPLATES, $urlRouterProvider ) {
 
 		var submenus = {};
 		angular.forEach( list2, function( obj ) {
-			var parent = obj.parent;
-
-			var obj2 = {
+			var parent = obj.parent,
+				obj2 = {
 					name: obj.name,
 					permission: obj.permission,
 					iconClassName: obj.iconClassName
@@ -61,8 +60,6 @@ function ptScreensProvider( $stateProvider, PT_TEMPLATES, $urlRouterProvider ) {
 				param = obj.param;
 			if ( !obj.noController )
 				stateConfig.controller = _.upperFirst( name ) + 'Controller';
-			if ( parent )
-				stateConfig.data = { parentMenu: parent };
 			$stateProvider.state( stateName, stateConfig );
 			if ( param ) {
 				var stateConfig2 = angular.copy( stateConfig );

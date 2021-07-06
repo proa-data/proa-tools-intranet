@@ -45,38 +45,28 @@ angular
 								'<img ng-src="data:image/png;base64,{{$root.userData.logo_contenido}}">' +
 							'</div>' +
 						'</div>' +
-						'<div class="navbar-text">' +
-							'<ol class="breadcrumb">' +
-								'<li ng-repeat="item in $root.breadcrumbList" ng-class="{active: item.sref}">' +
-									'<a ui-sref="{{item.sref}}" translate="{{item.translationId}}" ng-if="item.sref"></a>' +
-									'<span translate="{{item.translationId}}" ng-if="!item.sref"></span>' +
-								'</li>' +
-							'</ol>' +
-						'</div>' +
-						'<ul class="nav navbar-nav navbar-right">' +
-							'<li uib-dropdown>' +
-								'<a href="" uib-dropdown-toggle role="button">' +
-									'<img class="img-responsive img-circle" ng-src="data:image/jpeg;base64,{{$root.userData.contenido_foto}}" onerror="this.onerror=null;this.src=\'img/default-avatar.jpg\'">' +
-									' ' +
-									'<span class="caret"></span>' +
-								'</a>' +
-								'<ul class="dropdown-menu">' +
-									'<li class="dropdown-header">{{$root.userData.nombre}} ({{$root.userData.id_usuario}})</li>' +
-									'<li role="separator" class="divider"></li>' +
-									'<li><a href="" ng-click="openModal()"><span class="fas fa-user fa-fw"></span> <span translate="manageUser.title_dropdown"></span></a></li>' +
-									'<li><a href="" ng-click="logout()"><span class="fas fa-power-off fa-fw"></span> <span translate="manageUser.logout_dropdown"></span></a></li>' +
-								'</ul>' +
-							'</li>' +
-						'</ul>' +
 						'<div class="navbar-collapse" uib-collapse="isNavCollapsed">' +
 							'<ul class="nav navbar-nav">' +
-								'<li ng-repeat-start="item in navList" ng-if="isDisplayed(item)&&item.submenu">' +
-									'<a href="" ng-init="isSubnavCollapsed=true" ng-click="isSubnavCollapsed=!isSubnavCollapsed">' +
+								'<li uib-dropdown class="pull-right">' +
+									'<a href="" uib-dropdown-toggle role="button">' +
+										'<img class="img-responsive img-circle" ng-src="data:image/jpeg;base64,{{$root.userData.contenido_foto}}" onerror="this.onerror=null;this.src=\'img/default-avatar.jpg\'">' +
+										' ' +
+										'<span class="caret"></span>' +
+									'</a>' +
+									'<ul class="dropdown-menu">' +
+										'<li class="dropdown-header">{{$root.userData.nombre}} ({{$root.userData.id_usuario}})</li>' +
+										'<li role="separator" class="divider"></li>' +
+										'<li><a href="" ng-click="openModal()"><span class="fas fa-user fa-fw"></span> <span translate="manageUser.title_dropdown"></span></a></li>' +
+										'<li><a href="" ng-click="logout()"><span class="fas fa-power-off fa-fw"></span> <span translate="manageUser.logout_dropdown"></span></a></li>' +
+									'</ul>' +
+								'</li>' +
+								'<li uib-dropdown ng-repeat-start="item in navList" ng-if="isDisplayed(item)&&item.submenu">' +
+									'<a href="" uib-dropdown-toggle>' +
 										'<span ng-include="\'nav-content.html\'"></span>' +
 										' ' +
 										'<span class="caret"></span>' +
 									'</a>' +
-									'<ul class="nav navbar-nav" uib-collapse="isSubnavCollapsed">' +
+									'<ul uib-dropdown-menu>' +
 										'<li ui-sref-active="active" ng-include="\'nav-link.html\'" ng-repeat="item in item.submenu" ng-if="isDisplayed(item)"></li>' +
 									'</ul>' +
 								'</li>' +
@@ -94,7 +84,10 @@ angular
 				'<span translate="{{item.name}}.title"></span>' +
 				'</script>' +
 			'</header>' +
-			'<main class="container-fluid" ui-view></main>',
+			'<main class="container-fluid">' +
+				'<h2 class="h1" translate="{{$root.pageTitleTranslationId}}"></h2>' +
+				'<div ui-view></div>' +
+			'</main>',
 		modal: '<md-dialog flex="50">' +
 				'<md-toolbar>' +
 					'<div class="md-toolbar-tools">' +
