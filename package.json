@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/proa-data/proa-tools-intranet",
   "devDependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "browser-sync": "^2.26.3",
     "event-stream": "3.3.4",
     "gulp": "^3.9.1",
